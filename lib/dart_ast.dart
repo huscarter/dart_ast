@@ -5,6 +5,7 @@ import 'package:analyzer/dart/analysis/features.dart';
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
+
 import 'package:args/args.dart';
 
 void main(List<String> arguments) {
@@ -27,7 +28,7 @@ Future generate(String path) async {
   } else {
     try {
       var parseResult =
-      parseFile(path: path, featureSet: FeatureSet.fromEnableFlags([]));
+          parseFile(path: path, featureSet: FeatureSet.fromEnableFlags([]));
       var compilationUnit = parseResult.unit;
       compilationUnit.accept(TestAstVisitor());
     } catch (e) {
@@ -60,9 +61,9 @@ class DartAst extends SimpleAstVisitor<Map> {
   }
 }
 
-class TestAstVisitor extends GeneralizingAstVisitor<Map>{
+class TestAstVisitor extends GeneralizingAstVisitor<Map> {
   @override
-  Map visitNode(AstNode node){
+  Map visitNode(AstNode node) {
     stdout.write(node.accept(this));
     return super.visitNode(node);
   }
