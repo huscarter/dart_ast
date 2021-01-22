@@ -36,9 +36,9 @@ Future generate(String path) async {
       var compilationUnit = parseResult.unit;
       // compilationUnit.accept(DartAstVisitor());
 
-      var astData = compilationUnit.accept(DartAstVisitor());
-      // var astData = compilationUnit.accept(TestAstVisitor());
-      stdout.writeln(convert.jsonEncode(astData));
+      // var astData = compilationUnit.accept(DartAstVisitor());
+      var astData = compilationUnit.accept(TestAstVisitor());
+      // stdout.writeln(convert.jsonEncode(astData));
     } catch (e) {
       stdout.writeln('File parse error: ${e.toString()}');
     }
