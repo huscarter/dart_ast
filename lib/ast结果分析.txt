@@ -1,0 +1,57 @@
+// 执行语句
+dart lib/dart_ast.dart -f lib/test.dart
+
+// 日志输出顺序
+File path: lib/test.dart
+visitCompilationUnit source:int increment(int a) {return a + 1;}
+visitFunctionDeclaration source:int increment(int a) {return a + 1;}
+visitSimpleIdentifier source:increment
+_visitNode map: {type: Identifier, name: increment}
+visitFunctionExpression source:(int a) {return a + 1;}
+visitFormalParameterList source:(int a)
+visitSimpleFormalParameter source:int a
+visitTypeName source:int
+_visitNode map: {type: TypeName, name: int}
+_visitNodeList map: {type: SimpleFormalParameter, paramType: {type: TypeName, name: int}, name: a}
+_visitNode map: {type: FormalParameterList, parameterList: [{type: SimpleFormalParameter, paramType: {type: TypeName, name: int}, name: a}]}
+visitBlockFunctionBody source:{return a + 1;}
+visitBlock source:{return a + 1;}
+visitReturnStatement source:return a + 1;
+visitBinaryExpression source:a + 1
+visitSimpleIdentifier source:a
+_visitNode map: {type: Identifier, name: a}
+visitIntegerLiteral source:1
+_visitNode map: {type: NumericLiteral, value: 1}
+_visitNode map: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}
+_visitNodeList map: {type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}
+_visitNode map: {type: BlockStatement, body: [{type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}]}
+_visitNode map: {type: BlockStatement, body: [{type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}]}
+_visitNodeList map: {type: FunctionDeclaration, id: {type: Identifier, name: increment}, expression: {type: FunctionExpression, parameters: {type: FormalParameterList, parameterList: [{type: SimpleFormalParameter, paramType: {type: TypeName, name: int}, name: a}]}, body: {type: BlockStatement, body: [{type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}]}, isAsync: false}}
+
+// ast解析顺序
+visitCompilationUnit source:int increment(int a) {return a + 1;}
+visitFunctionDeclaration source:int increment(int a) {return a + 1;}
+visitSimpleIdentifier source:increment
+visitFunctionExpression source:(int a) {return a + 1;}
+visitFormalParameterList source:(int a)
+visitSimpleFormalParameter source:int a
+visitTypeName source:int
+visitBlockFunctionBody source:{return a + 1;}
+visitBlock source:{return a + 1;}
+visitReturnStatement source:return a + 1;
+visitBinaryExpression source:a + 1
+visitSimpleIdentifier source:a
+visitIntegerLiteral source:1
+
+// 格式化结果顺序
+_visitNodeList map: {type: FunctionDeclaration, id: {type: Identifier, name: increment}, expression: {type: FunctionExpression, parameters: {type: FormalParameterList, parameterList: [{type: SimpleFormalParameter, paramType: {type: TypeName, name: int}, name: a}]}, body: {type: BlockStatement, body: [{type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}]}, isAsync: false}}
+_visitNode map: {type: Identifier, name: increment}
+_visitNode map: {type: FormalParameterList, parameterList: [{type: SimpleFormalParameter, paramType: {type: TypeName, name: int}, name: a}]}
+_visitNodeList map: {type: SimpleFormalParameter, paramType: {type: TypeName, name: int}, name: a}
+_visitNode map: {type: TypeName, name: int}
+_visitNode map: {type: BlockStatement, body: [{type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}]}
+_visitNodeList map: {type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}
+_visitNode map: {type: BlockStatement, body: [{type: ReturnStatement, argument: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}}]}
+_visitNode map: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}
+_visitNode map: {type: Identifier, name: a}
+_visitNode map: {type: NumericLiteral, value: 1}
