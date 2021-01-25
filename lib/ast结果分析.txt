@@ -55,3 +55,20 @@ _visitNode map: {type: BlockStatement, body: [{type: ReturnStatement, argument: 
 _visitNode map: {type: BinaryExpression, operator: +, left: {type: Identifier, name: a}, right: {type: NumericLiteral, value: 1}}
 _visitNode map: {type: Identifier, name: a}
 _visitNode map: {type: NumericLiteral, value: 1}
+
+
+//
+visitCompilationUnit source:import 'package:dart_ast/super_test1.dart'; import 'super_test.dart'; import 'super_test2.dart' as S2; class Test with SuperTest, SuperTest1 {}
+visitClassDeclaration source:class Test with SuperTest, SuperTest1 {}
+visitSimpleIdentifier source:Test
+visitWithClause source:with SuperTest, SuperTest1
+visitTypeName source:SuperTest
+visitTypeName source:SuperTest1
+visitImportDirective source:import 'package:dart_ast/super_test1.dart';
+visitImportDirective importPath:super_test1.dart/
+visitImportDirective source:import 'super_test.dart';
+visitImportDirective importPath:super_test.dart
+visitImportDirective source:import 'super_test2.dart' as S2;
+visitImportDirective importPath:super_test2.dart
+
+//
