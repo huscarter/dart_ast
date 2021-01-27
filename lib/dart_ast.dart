@@ -6,7 +6,7 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:args/args.dart';
-import 'util/logger.dart';
+import 'util/Logger.dart';
 
 ///
 void main(List<String> arguments) {
@@ -16,7 +16,7 @@ void main(List<String> arguments) {
   var argResults = parser.parse(arguments);
   final paths = argResults.rest;
   if (paths.isEmpty) {
-    Logger.writeln('File not found');
+    // Logger.writeln('File not found');
   } else {
     generate(paths[0]);
   }
@@ -40,7 +40,7 @@ Future generate(String path) async {
       // var astData = compilationUnit.accept(TestAstVisitor());
       Logger.writeln(convert.jsonEncode(astData));
     } catch (e) {
-      Logger.writeln('File parse error: ${e.toString()}');
+      // Logger.writeln('File parse error: ${e.toString()}');
     }
   }
 }
@@ -74,7 +74,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   /// 构造根节点
   Map visitCompilationUnit(CompilationUnit node) {
-    Logger.writeln("visitCompilationUnit source:${node.toSource()}");
+    // Logger.writeln("visitCompilationUnit source:${node.toSource()}");
     if (node.declarations.isNotEmpty) {
       return {
         "type": "Program",
@@ -89,7 +89,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构建方法调用
   @override
   Map visitMethodInvocation(MethodInvocation node) {
-    Logger.writeln("visitMethodInvocation source:${node.toSource()}");
+    // Logger.writeln("visitMethodInvocation source:${node.toSource()}");
     Map callee;
     if (node.target != null) {
       node.target.accept(this);
@@ -113,23 +113,23 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构建代码块
   @override
   Map visitBlock(Block node) {
-    Logger.writeln("visitBlock source:${node.toSource()}");
+    // Logger.writeln("visitBlock source:${node.toSource()}");
     return {
       "type": "BlockStatement",
-      "statements": _visitNodeList(node.statements)
+      "body": _visitNodeList(node.statements)
     };
   }
 
   @override
   Map visitBlockFunctionBody(BlockFunctionBody node) {
-    Logger.writeln("visitBlockFunctionBody source:${node.toSource()}");
+    // Logger.writeln("visitBlockFunctionBody source:${node.toSource()}");
     return _visitNode(node.block);
   }
 
   /// 构建变量声明
   @override
   Map visitVariableDeclaration(VariableDeclaration node) {
-    Logger.writeln("visitVariableDeclaration source:${node.toSource()}");
+    // Logger.writeln("visitVariableDeclaration source:${node.toSource()}");
     return {
       "type": "VariableDeclarator",
       "name": _visitNode(node.name),
@@ -139,15 +139,14 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitVariableDeclarationStatement(VariableDeclarationStatement node) {
-    Logger.writeln(
-        "visitVariableDeclarationStatement source:${node.toSource()}");
+    // Logger.writeln("visitVariableDeclarationStatement source:${node.toSource()}");
     return _visitNode(node.variables);
   }
 
   /// 构建变量声明
   @override
   Map visitVariableDeclarationList(VariableDeclarationList node) {
-    Logger.writeln("visitVariableDeclarationList source:${node.toSource()}");
+    // Logger.writeln("visitVariableDeclarationList source:${node.toSource()}");
     return {
       "type": "VariableDeclarationList",
       "typeAnnotation": _visitNode(node.type),
@@ -158,13 +157,13 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构造标识符定义
   @override
   Map visitSimpleIdentifier(SimpleIdentifier node) {
-    Logger.writeln("visitSimpleIdentifier source:${node.toSource()}");
+    // Logger.writeln("visitSimpleIdentifier source:${node.toSource()}");
     return {"type": "Identifier", "name": node.name};
   }
 
   @override
   Map visitDeclaredIdentifier(DeclaredIdentifier node) {
-    Logger.writeln("visitDeclaredIdentifier source:${node.toSource()}");
+    // Logger.writeln("visitDeclaredIdentifier source:${node.toSource()}");
     return {
       "type": "DeclaredIdentifier",
       "declared": _visitNode(node.identifier)
@@ -174,7 +173,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构造运算表达式结构
   @override
   Map visitBinaryExpression(BinaryExpression node) {
-    Logger.writeln("visitBinaryExpression source:${node.toSource()}");
+    // Logger.writeln("visitBinaryExpression source:${node.toSource()}");
     return {
       "type": "BinaryExpression",
       "operator": node.operator.lexeme,
@@ -185,14 +184,14 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitIntegerLiteral(IntegerLiteral node) {
-    Logger.writeln("visitIntegerLiteral source:${node.toSource()}");
+    // Logger.writeln("visitIntegerLiteral source:${node.toSource()}");
     return {"type": "IntegerLiteral", "value": node.value};
   }
 
   /// 构建函数声明
   @override
   Map visitFunctionDeclaration(FunctionDeclaration node) {
-    Logger.writeln("visitFunctionDeclaration source:${node.toSource()}");
+    // Logger.writeln("visitFunctionDeclaration source:${node.toSource()}");
     return {
       "type": "FunctionDeclaration",
       "name": _visitNode(node.name),
@@ -202,15 +201,14 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitFunctionDeclarationStatement(FunctionDeclarationStatement node) {
-    Logger.writeln(
-        "visitFunctionDeclarationStatement source:${node.toSource()}");
+    // Logger.writeln("visitFunctionDeclarationStatement source:${node.toSource()}");
     return _visitNode(node.functionDeclaration);
   }
 
   /// 构建函数表达式
   @override
   Map visitFunctionExpression(FunctionExpression node) {
-    Logger.writeln("visitFunctionExpression source:${node.toSource()}");
+    // Logger.writeln("visitFunctionExpression source:${node.toSource()}");
     return {
       "type": "FunctionExpression",
       "parameters": _visitNode(node.parameters),
@@ -222,7 +220,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构造函数参数
   @override
   Map visitSimpleFormalParameter(SimpleFormalParameter node) {
-    Logger.writeln("visitSimpleFormalParameter source:${node.toSource()}");
+    // Logger.writeln("visitSimpleFormalParameter source:${node.toSource()}");
     return {
       "type": "SimpleFormalParameter",
       "parameterType": _visitNode(node.type),
@@ -233,7 +231,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构造函数参数
   @override
   Map visitFormalParameterList(FormalParameterList node) {
-    Logger.writeln("visitFormalParameterList source:${node.toSource()}");
+    // Logger.writeln("visitFormalParameterList source:${node.toSource()}");
     return {
       "type": "FormalParameterList",
       "parameterList": _visitNodeList(node.parameters)
@@ -243,7 +241,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构造函数参数类型
   @override
   Map visitTypeName(TypeName node) {
-    Logger.writeln("visitTypeName source:${node.toSource()}");
+    // Logger.writeln("visitTypeName source:${node.toSource()}");
     return {
       "type": "TypeName",
       "name": node.name.name,
@@ -253,7 +251,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构建返回类型
   @override
   Map visitReturnStatement(ReturnStatement node) {
-    Logger.writeln("visitReturnStatement source:${node.toSource()}");
+    // Logger.writeln("visitReturnStatement source:${node.toSource()}");
     return {
       "type": "ReturnStatement",
       "expression": _visitNode(node.expression),
@@ -263,7 +261,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构建方法
   @override
   Map visitMethodDeclaration(MethodDeclaration node) {
-    Logger.writeln("visitMethodDeclaration source:${node.toSource()}");
+    // Logger.writeln("visitMethodDeclaration source:${node.toSource()}");
     return {
       "type": "MethodDeclaration",
       "name": _visitNode(node.name),
@@ -277,7 +275,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitNamedExpression(NamedExpression node) {
-    Logger.writeln("visitNamedExpression source:${node.toSource()}");
+    // Logger.writeln("visitNamedExpression source:${node.toSource()}");
     return {
       "type": "NamedExpression",
       "name": _visitNode(node.name),
@@ -287,7 +285,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitPrefixedIdentifier(PrefixedIdentifier node) {
-    Logger.writeln("visitPrefixedIdentifier source:${node.toSource()}");
+    // Logger.writeln("visitPrefixedIdentifier source:${node.toSource()}");
     return {
       "type": "PrefixedIdentifier",
       "identifier": _visitNode(node.identifier),
@@ -297,7 +295,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitClassDeclaration(ClassDeclaration node) {
-    Logger.writeln("visitClassDeclaration source:${node.toSource()}");
+    // Logger.writeln("visitClassDeclaration source:${node.toSource()}");
 
     return {
       "type": "ClassDeclaration",
@@ -306,25 +304,25 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
       "implementsClause": _visitNode(node.implementsClause),
       "widthClause": _visitNode(node.withClause),
       'metadata': _visitNodeList(node.metadata),
-      "members": _visitNodeList(node.members),
+      "body": _visitNodeList(node.members),
     };
   }
 
   @override
   Map visitSimpleStringLiteral(SimpleStringLiteral node) {
-    Logger.writeln("visitSimpleStringLiteral source:${node.toSource()}");
-    return {"type": "SimpleStringLiteral", "value": node.value};
+    // Logger.writeln("visitSimpleStringLiteral source:${node.toSource()}");
+    return {"type": "StringLiteral", "value": node.value};
   }
 
   @override
   Map visitBooleanLiteral(BooleanLiteral node) {
-    Logger.writeln("visitBooleanLiteral source:${node.toSource()}");
+    // Logger.writeln("visitBooleanLiteral source:${node.toSource()}");
     return {"type": "BooleanLiteral", "value": node.value};
   }
 
   @override
   Map visitArgumentList(ArgumentList node) {
-    Logger.writeln("visitArgumentList source:${node.toSource()}");
+    // Logger.writeln("visitArgumentList source:${node.toSource()}");
     return {
       "type": "ArgumentList",
       "argumentList": _visitNodeList(node.arguments)
@@ -333,19 +331,19 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitLabel(Label node) {
-    Logger.writeln("visitLabel source:${node.toSource()}");
+    // Logger.writeln("visitLabel source:${node.toSource()}");
     return _visitNode(node.label);
   }
 
   @override
   Map visitExtendsClause(ExtendsClause node) {
-    Logger.writeln("visitExtendsClause source:${node.toSource()}");
+    // Logger.writeln("visitExtendsClause source:${node.toSource()}");
     return _visitNode(node.superclass);
   }
 
   @override
   Map visitImplementsClause(ImplementsClause node) {
-    Logger.writeln("visitImplementsClause source:${node.toSource()}");
+    // Logger.writeln("visitImplementsClause source:${node.toSource()}");
     return {
       "type": "ImplementsClause",
       "implements": _visitNodeList(node.interfaces)
@@ -354,13 +352,13 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitWithClause(WithClause node) {
-    Logger.writeln("visitWithClause source:${node.toSource()}");
+    // Logger.writeln("visitWithClause source:${node.toSource()}");
     return {"type": "WithClause", "withs": _visitNodeList(node.mixinTypes)};
   }
 
   @override
   Map visitPropertyAccess(PropertyAccess node) {
-    Logger.writeln("visitPropertyAccess source:${node.toSource()}");
+    // Logger.writeln("visitPropertyAccess source:${node.toSource()}");
     return {
       "type": "PropertyAccess",
       "name": _visitNode(node.propertyName),
@@ -370,7 +368,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitHideCombinator(HideCombinator node) {
-    Logger.writeln("visitHideCombinator source:${node.toSource()}");
+    // Logger.writeln("visitHideCombinator source:${node.toSource()}");
     return {
       "type": "HideCombinator ",
       "hiddenNames": _visitNodeList(node.hiddenNames)
@@ -379,7 +377,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitShowCombinator(ShowCombinator node) {
-    Logger.writeln("visitShowCombinator source:${node.toSource()}");
+    // Logger.writeln("visitShowCombinator source:${node.toSource()}");
     return {
       "type": "ShowCombinator ",
       "shownNames": _visitNodeList(node.shownNames)
@@ -389,7 +387,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构建import数据组
   @override
   Map visitImportDirective(ImportDirective node) {
-    Logger.writeln("visitImportDirective source:${node.toSource()}");
+    // Logger.writeln("visitImportDirective source:${node.toSource()}");
 
     // LogUtil.writeln( "visitImportDirective uri:${node.uri}, asKeyword:${node.asKeyword}, prefix:${node.prefix}");
 

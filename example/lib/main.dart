@@ -1,59 +1,89 @@
 import 'package:dart_ast/demo.dart';
+import 'package:dart_ast_example/ast_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:flutter/services.dart';
-import 'package:dart_ast/dart_ast.dart';
+import 'package:dart_ast/runtime/runtime_page.dart';
+import 'package:dart_ast/util/navigation.dart';
+import 'package:dart_ast/util/logger.dart';
 
+///
 void main() {
   runApp(MyApp());
 }
 
+/// App start
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-
   @override
   void initState() {
     super.initState();
-    initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await Demo.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
-  }
-
+  /// Config you app
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+      debugShowCheckedModeBanner: false,
+      home: HomePage(),
+    );
+  }
+}
+
+/// Home page
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    Temp temp = Temp.fromString("test");
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Plugin example app'),
+      ),
+      body: Column(
+        children: <Widget>[
+          SizedBox(height: 48),
+          Container(
+            margin: EdgeInsets.all(16),
+            width: double.infinity,
+            height: 48,
+            child: MaterialButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text("static ast page"),
+              onPressed: () {
+                Navigation.push(context, AstPage());
+              },
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.all(16),
+            width: double.infinity,
+            height: 48,
+            child: MaterialButton(
+              color: Colors.blue,
+              textColor: Colors.white,
+              child: Text("dynamic ast page ${temp.arg}"),
+              onPressed: () {
+                Navigation.push(context, RuntimePage());
+              },
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class Temp {
+  String arg;
+
+  Temp(this.arg);
+
+  Temp.fromString(String arg) {
+    this.arg = arg;
   }
 }
