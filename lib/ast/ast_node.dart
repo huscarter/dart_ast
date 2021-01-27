@@ -19,21 +19,16 @@ class Program extends AstNode {
   List<AstNode> body;
   List<AstNode> directive;
 
-  Program(List<AstNode> body, List<AstNode> directive, {Map map})
-      : super(map: map);
-
-  Program.fromMap(Map map) {
-    List<AstNode> bodies = [];
+  Program.fromMap(Map map) :super(map:map){
+    body = [];
     for (Map map in map["body"]) {
-      bodies.add(AstNode(map: map));
+      body.add(AstNode(map: map));
     }
 
-    List<AstNode> directives = [];
+    directive = [];
     for (Map map in map["body"]) {
-      directives.add(AstNode(map: map));
+      directive.add(AstNode(map: map));
     }
-
-    Program(bodies, directives, map: map);
   }
 }
 
@@ -42,6 +37,15 @@ class Identifier extends AstNode {
   String name;
 
   Identifier(String name, {Map map}) : super(map: map) {
+    this.name = name;
+  }
+}
+
+///
+class ParameterType extends AstNode{
+  String name;
+
+  ParameterType(String name, {Map map}) : super(map: map) {
     this.name = name;
   }
 }
