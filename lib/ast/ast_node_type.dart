@@ -3,7 +3,7 @@ class AstNodeType{
   AstNodeType._();
 
   ///
-  static const String type = "Program";
+  static const String Program = "Program";
 
   ///
   static const String Annotation = "Annotation";

@@ -34,7 +34,6 @@ Future generate(String path) async {
 
       // LogUtil.writeln("File content: ${parseResult.content}");
       var compilationUnit = parseResult.unit;
-      // compilationUnit.accept(DartAstVisitor());
 
       var astData = compilationUnit.accept(DartAstVisitor());
       // var astData = compilationUnit.accept(TestAstVisitor());
@@ -59,9 +58,10 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   ///
   List<Map> _visitNodeList(NodeList<AstNode> nodes) {
+    if (nodes == null) {
+      return null;
+    }
     List<Map> maps = [];
-    nodes = nodes ?? [];
-
     for (AstNode node in nodes) {
       if (node != null) {
         var map = node.accept(this);
@@ -102,11 +102,18 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
       callee = _visitNode(node.methodName);
     }
 
+    Map argumentList;
+    if (node.argumentList != null &&
+        node.argumentList.arguments != null &&
+        node.argumentList.arguments.length > 0) {
+      argumentList = _visitNode(node.argumentList);
+    }
+
     return {
       "type": "MethodInvocation",
       "callee": callee,
       "typeArguments": _visitNode(node.typeArguments),
-      "argumentList": _visitNode(node.argumentList),
+      "argumentList": argumentList,
     };
   }
 
@@ -116,7 +123,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     // Logger.writeln("visitBlock source:${node.toSource()}");
     return {
       "type": "BlockStatement",
-      "body": _visitNodeList(node.statements)
+      "statements": _visitNodeList(node.statements)
     };
   }
 
@@ -158,7 +165,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitSimpleIdentifier(SimpleIdentifier node) {
     // Logger.writeln("visitSimpleIdentifier source:${node.toSource()}");
-    return {"type": "Identifier", "name": node.name};
+    return {"type": "Identifier", "value": node.name};
   }
 
   @override
@@ -167,6 +174,29 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     return {
       "type": "DeclaredIdentifier",
       "declared": _visitNode(node.identifier)
+    };
+  }
+
+  // Map visitExpression(Expression node) {
+  //   Logger.writeln("visitExpression source:${node.toSource()}");
+  //   return null;
+  // }
+
+  @override
+  Map visitExpressionFunctionBody(ExpressionFunctionBody node) {
+    // Logger.writeln("visitExpressionFunctionBody source:${node.toSource()}");
+    return {
+      "type": "ExpressionFunctionBody",
+      "expression": _visitNode(node.expression),
+    };
+  }
+
+  @override
+  Map visitExpressionStatement(ExpressionStatement node) {
+    // Logger.writeln("visitExpressionStatement source:${node.toSource()}");
+    return {
+      "type": "ExpressionStatement",
+      "expression": _visitNode(node.expression),
     };
   }
 
@@ -232,10 +262,12 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitFormalParameterList(FormalParameterList node) {
     // Logger.writeln("visitFormalParameterList source:${node.toSource()}");
-    return {
-      "type": "FormalParameterList",
-      "parameterList": _visitNodeList(node.parameters)
-    };
+
+    List<Map> parameterList;
+    if (node.parameters != null && node.parameters.length > 0) {
+      parameterList = _visitNodeList(node.parameters);
+    }
+    return {"type": "FormalParameterList", "parameterList": parameterList};
   }
 
   /// 构造函数参数类型
@@ -297,13 +329,17 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitClassDeclaration(ClassDeclaration node) {
     // Logger.writeln("visitClassDeclaration source:${node.toSource()}");
 
+    List<Map> metadata;
+    if (node.metadata != null && node.metadata.length > 0) {
+      metadata = _visitNodeList(node.metadata);
+    }
     return {
       "type": "ClassDeclaration",
       "name": _visitNode(node.name),
       "superClause": _visitNode(node.extendsClause),
       "implementsClause": _visitNode(node.implementsClause),
       "widthClause": _visitNode(node.withClause),
-      'metadata': _visitNodeList(node.metadata),
+      'metadata': metadata,
       "body": _visitNodeList(node.members),
     };
   }
@@ -391,11 +427,16 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
     // LogUtil.writeln( "visitImportDirective uri:${node.uri}, asKeyword:${node.asKeyword}, prefix:${node.prefix}");
 
+    List<Map> combinators;
+    if (node.combinators != null) {
+      combinators = _visitNodeList(node.combinators);
+    }
+
     return {
       "type": "ImportDirective",
       "uri": _visitNode(node.uri),
       "prefix": _visitNode(node.prefix), // prefix为 as 的昵称
-      "combinators": _visitNodeList(node.combinators)
+      "combinators": combinators
     };
   }
 }

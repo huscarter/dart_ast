@@ -5,7 +5,7 @@
       "type":"ClassDeclaration",
       "name":{
         "type":"Identifier",
-        "name":"AstPage"
+        "value":"AstPage"
       },
       "superClause":{
         "type":"TypeName",
@@ -13,20 +13,31 @@
       },
       "implementsClause":null,
       "widthClause":null,
-      "metadata":[],
-      "members":[
+      "metadata":null,
+      "body":[
         {
           "type":"MethodDeclaration",
           "name":{
             "type":"Identifier",
-            "name":"createState"
+            "value":"createState"
           },
           "parameters":{
             "type":"FormalParameterList",
-            "parameterList":[]
+            "parameterList":null
           },
           "typeParameters":null,
-          "body":null,
+          "body":{
+            "type":"ExpressionFunctionBody",
+            "expression":{
+              "type":"MethodInvocation",
+              "callee":{
+                "type":"Identifier",
+                "value":"_AstPageState"
+              },
+              "typeArguments":null,
+              "argumentList":null
+            }
+          },
           "isAsync":false,
           "returnType":{
             "type":"TypeName",
@@ -39,7 +50,7 @@
       "type":"ClassDeclaration",
       "name":{
         "type":"Identifier",
-        "name":"_AstPageState"
+        "value":"_AstPageState"
       },
       "superClause":{
         "type":"TypeName",
@@ -47,13 +58,13 @@
       },
       "implementsClause":null,
       "widthClause":null,
-      "metadata":[],
-      "members":[
+      "metadata":null,
+      "body":[
         {
           "type":"MethodDeclaration",
           "name":{
             "type":"Identifier",
-            "name":"build"
+            "value":"build"
           },
           "parameters":{
             "type":"FormalParameterList",
@@ -78,7 +89,7 @@
                   "type":"MethodInvocation",
                   "callee":{
                     "type":"Identifier",
-                    "name":"Scaffold"
+                    "value":"Scaffold"
                   },
                   "typeArguments":null,
                   "argumentList":{
@@ -88,13 +99,13 @@
                         "type":"NamedExpression",
                         "name":{
                           "type":"Identifier",
-                          "name":"appBar"
+                          "value":"appBar"
                         },
                         "expression":{
                           "type":"MethodInvocation",
                           "callee":{
                             "type":"Identifier",
-                            "name":"AppBar"
+                            "value":"AppBar"
                           },
                           "typeArguments":null,
                           "argumentList":{
@@ -104,20 +115,20 @@
                                 "type":"NamedExpression",
                                 "name":{
                                   "type":"Identifier",
-                                  "name":"title"
+                                  "value":"title"
                                 },
                                 "expression":{
                                   "type":"MethodInvocation",
                                   "callee":{
                                     "type":"Identifier",
-                                    "name":"Text"
+                                    "value":"Text"
                                   },
                                   "typeArguments":null,
                                   "argumentList":{
                                     "type":"ArgumentList",
                                     "argumentList":[
                                       {
-                                        "type":"SimpleStringLiteral",
+                                        "type":"StringLiteral",
                                         "value":"AstPage"
                                       }
                                     ]
@@ -132,13 +143,13 @@
                         "type":"NamedExpression",
                         "name":{
                           "type":"Identifier",
-                          "name":"body"
+                          "value":"body"
                         },
                         "expression":{
                           "type":"MethodInvocation",
                           "callee":{
                             "type":"Identifier",
-                            "name":"Center"
+                            "value":"Center"
                           },
                           "typeArguments":null,
                           "argumentList":{
@@ -148,20 +159,20 @@
                                 "type":"NamedExpression",
                                 "name":{
                                   "type":"Identifier",
-                                  "name":"child"
+                                  "value":"child"
                                 },
                                 "expression":{
                                   "type":"MethodInvocation",
                                   "callee":{
                                     "type":"Identifier",
-                                    "name":"Text"
+                                    "value":"Text"
                                   },
                                   "typeArguments":null,
                                   "argumentList":{
                                     "type":"ArgumentList",
                                     "argumentList":[
                                       {
-                                        "type":"SimpleStringLiteral",
+                                        "type":"StringLiteral",
                                         "value":"Hello World"
                                       }
                                     ]
@@ -191,20 +202,35 @@
     {
       "type":"ImportDirective",
       "uri":{
-        "type":"SimpleStringLiteral",
-        "value":"package:flutter/cupertino.dart"
+        "type":"StringLiteral",
+        "value":"package:dart_ast/util/logger.dart"
       },
       "prefix":null,
-      "combinators":[]
+      "combinators":[
+
+      ]
     },
     {
       "type":"ImportDirective",
       "uri":{
-        "type":"SimpleStringLiteral",
+        "type":"StringLiteral",
+        "value":"package:flutter/cupertino.dart"
+      },
+      "prefix":null,
+      "combinators":[
+
+      ]
+    },
+    {
+      "type":"ImportDirective",
+      "uri":{
+        "type":"StringLiteral",
         "value":"package:flutter/material.dart"
       },
       "prefix":null,
-      "combinators":[]
+      "combinators":[
+
+      ]
     }
   ]
 }
