@@ -1,4 +1,5 @@
-import 'package:dart_ast/demo.dart';
+import 'package:dart_ast/test/plugin_test.dart';
+import 'package:dart_ast/test/plugin_test.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dart_ast/dart_ast.dart';
@@ -19,6 +20,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await Demo.platformVersion, '42');
+    expect(await PluginTest.platformVersion, '42');
   });
 }

@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:dart_ast/ast/ast_node.dart';
-import 'package:dart_ast/demo.dart';
+import 'package:dart_ast/runtime/runtime_page.dart';
+import 'package:dart_ast/runtime/widget/ast_widget.dart';
+import 'package:dart_ast/util/logger.dart';
+import 'package:dart_ast/util/navigation.dart';
 import 'package:dart_ast_example/ast_page.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:flutter/services.dart';
-import 'package:dart_ast/runtime/runtime_page.dart';
-import 'package:dart_ast/util/navigation.dart';
-import 'package:dart_ast/util/logger.dart';
 
 import 'ast_json.dart';
 import 'base_page.dart';
@@ -42,9 +38,12 @@ class _MyAppState extends State<MyApp> {
 
 /// Home page
 class HomePage extends StatelessPage {
+  static final String tag = "HomePage";
+
   @override
   Widget build(BuildContext context) {
-    Temp temp = Temp.fromString("test");
+    // Logger.out(tag, new TestStatic().tag);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plugin example app'),
@@ -72,7 +71,7 @@ class HomePage extends StatelessPage {
             child: MaterialButton(
               color: Colors.blue,
               textColor: Colors.white,
-              child: Text("dynamic ast page ${temp.arg}"),
+              child: Text("dynamic ast page"),
               onPressed: () {
                 Navigation.push(
                   context,
@@ -87,12 +86,13 @@ class HomePage extends StatelessPage {
   }
 }
 
-class Temp {
-  String arg;
+class TestStatic extends AstWidget{
+  static String name = "TestStatic";
 
-  Temp(this.arg);
-
-  Temp.fromString(String arg) {
-    this.arg = arg;
+  @override
+  Widget build(Expression node) {
+    return Text("");
   }
+
 }
+

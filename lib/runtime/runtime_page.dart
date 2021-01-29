@@ -1,6 +1,6 @@
 import 'package:dart_ast/ast/ast_node.dart';
 import 'package:dart_ast/ast/ast_node_type.dart';
-import 'package:dart_ast/runtime/runtime_widget.dart';
+import 'package:dart_ast/runtime/runtime_factory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,7 @@ class _RuntimePageState extends State<RuntimePage> {
   }
 
   /// [widget.astNode]是整个页面dart文件的数据，真正页面布局的数据是在"build"方法里，
-  /// 所以构建widget时需要取出build方法里的内容交给[RuntimeWidget]处理。
+  /// 所以构建widget时需要取出build方法里的内容交给[RuntimeFactory]处理。
   void _buildAstWidget() async {
     Program program = widget.astNode as Program;
     for (ClassBody body in program.body) {
@@ -54,7 +54,7 @@ class _RuntimePageState extends State<RuntimePage> {
             for (BlockStatement statement in method.body) {
               // 是返回体widget
               if (statement.type == AstNodeType.ReturnStatement) {
-                _astWidget = RuntimeWidget().build(statement.expression);
+                _astWidget = RuntimeFactory.buildWidget(statement.expression);
                 _setState();
                 break;
               }

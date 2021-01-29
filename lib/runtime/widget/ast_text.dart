@@ -4,22 +4,17 @@ import 'package:dart_ast/ast/ast_node.dart';
 import 'package:dart_ast/ast/ast_node_type.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
 import 'package:dart_ast/runtime/argument/arg_text.dart';
-import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/material.dart';
 
 ///
-class AstText implements AstWidget {
-  static final String tag = "AstText";
+class AstText extends AstWidget {
 
-  @override
-  String get name => "Text";
+  static final String tag = "AstText";
 
   @override
   Widget build(Expression node) {
     // Logger.out(tag, "node:${jsonEncode(node)}");
     if (node.argumentList == null) return Text("");
-    String calleeValue = node.callee.value;
-    if (calleeValue != name) return Text("");
     String text = "";
     TextStyle textStyle;
     for (TypeArgument arg in node.argumentList) {
@@ -42,4 +37,5 @@ class AstText implements AstWidget {
       style: textStyle,
     );
   }
+
 }

@@ -15,7 +15,7 @@ class _AstPageState extends State<AstPage> {
     // test();
     return Scaffold(
       appBar: AppBar(
-        title: Text("AstPage", style: TextStyle(color: Colors.black)),
+        title: Text("AstPage", style: TextStyle(color: Colors.white)),
       ),
       body: Center(
         child: Text("Hello World"),
