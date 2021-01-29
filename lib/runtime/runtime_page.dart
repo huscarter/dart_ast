@@ -1,11 +1,14 @@
+import 'package:dart_ast/ast/ast_node.dart';
+import 'package:dart_ast/ast/ast_node_type.dart';
+import 'package:dart_ast/runtime/runtime_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-///
+/// 运行时page，通过解析[AstNode]生成页面布局
 class RuntimePage extends StatefulWidget {
-  final String map;
+  final AstNode astNode;
 
-  RuntimePage({Key key, this.map}) : super(key: key);
+  RuntimePage(this.astNode, {Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _RuntimePageState();
@@ -20,9 +23,15 @@ class _RuntimePageState extends State<RuntimePage> {
   @override
   void initState() {
     super.initState();
+    //
     _loadWidget = Center(
-        child: SizedBox.fromSize(
-            size: Size.square(30), child: CircularProgressIndicator()));
+      child: SizedBox.fromSize(
+        size: Size.square(30),
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    _buildAstWidget();
   }
 
   ///
@@ -32,8 +41,36 @@ class _RuntimePageState extends State<RuntimePage> {
     }
   }
 
-  void _buildAstWidget(){
+  /// [widget.astNode]是整个页面dart文件的数据，真正页面布局的数据是在"build"方法里，
+  /// 所以构建widget时需要取出build方法里的内容交给[RuntimeWidget]处理。
+  void _buildAstWidget() async {
+    Program program = widget.astNode as Program;
+    for (ClassBody body in program.body) {
+      if (isBuildClass(body.superClause.name)) {
+        // 是布局class
+        for (MethodDeclaration method in body.body) {
+          // 是布局方法"build"
+          if (method.name.value == "build") {
+            for (BlockStatement statement in method.body) {
+              // 是返回体widget
+              if (statement.type == AstNodeType.ReturnStatement) {
+                _astWidget = RuntimeWidget().build(statement.expression);
+                _setState();
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
+  /// 判断布局class
+  bool isBuildClass(String name) {
+    return name == "StatelessWidget" ||
+        name == "StatelessPage" ||
+        name == "State" ||
+        name == "BaseState";
   }
 
   ///

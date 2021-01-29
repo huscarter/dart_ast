@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dart_ast/ast/ast_node.dart';
 import 'package:dart_ast/demo.dart';
 import 'package:dart_ast_example/ast_page.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:dart_ast/runtime/runtime_page.dart';
 import 'package:dart_ast/util/navigation.dart';
 import 'package:dart_ast/util/logger.dart';
+
+import 'ast_json.dart';
+import 'base_page.dart';
 
 ///
 void main() {
@@ -35,7 +41,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 /// Home page
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessPage {
   @override
   Widget build(BuildContext context) {
     Temp temp = Temp.fromString("test");
@@ -68,7 +74,10 @@ class HomePage extends StatelessWidget {
               textColor: Colors.white,
               child: Text("dynamic ast page ${temp.arg}"),
               onPressed: () {
-                Navigation.push(context, RuntimePage());
+                Navigation.push(
+                  context,
+                  RuntimePage(parseAstNodeSync(AstJson.ast_page)),
+                );
               },
             ),
           ),

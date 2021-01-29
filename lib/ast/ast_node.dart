@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dart_ast/ast/ast_node_key.dart';
+import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/cupertino.dart';
 
 /// [dart_ast.dart]生成的json数据解析称AstNode。
@@ -10,9 +11,10 @@ import 'package:flutter/cupertino.dart';
 ///
 /// AstNode 基类。
 class AstNode {
+  static final String tag = "AstNode";
   String type;
 
-  // Map map;
+  Map map;
 
   AstNode({String type, Map map}) {
     if (map == null) return;
@@ -21,7 +23,12 @@ class AstNode {
     } else {
       this.type = type;
     }
-    // this.map = map;
+    this.map = map;
+    // Logger.out(tag, "map:$map");
+  }
+
+  Map<String, dynamic> toJson() {
+    return map;
   }
 }
 
@@ -89,10 +96,10 @@ class TypeArgument extends AstNode {
   TypeArgument.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.name = Identifier.fromMap(map[AstNodeKey.name]);
+    this.value = map[AstNodeKey.value];
     if (map[AstNodeKey.expression] != null) {
       this.expression = Expression.fromMap(map[AstNodeKey.expression]);
     }
-    this.value = map[AstNodeKey.value];
   }
 }
 
@@ -134,7 +141,9 @@ class MethodDeclaration extends AstNode {
   MethodDeclaration.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.name = Identifier.fromMap(map[AstNodeKey.name]);
-    if (map[AstNodeKey.parameters] != null) {
+
+    if (map[AstNodeKey.parameters] != null &&
+        map[AstNodeKey.parameters][AstNodeKey.parameterList] != null) {
       parameters = [];
       for (Map temp in map[AstNodeKey.parameters][AstNodeKey.parameterList]) {
         parameters.add(FormalParameter.fromMap(temp));
@@ -143,7 +152,8 @@ class MethodDeclaration extends AstNode {
 
     // todo typeParameters
 
-    if (map[AstNodeKey.body] != null) {
+    if (map[AstNodeKey.body] != null &&
+        map[AstNodeKey.body][AstNodeKey.statements] != null) {
       body = [];
       for (Map temp in map[AstNodeKey.body][AstNodeKey.statements]) {
         body.add(BlockStatement.fromMap(temp));
@@ -176,7 +186,6 @@ class ClassBody extends AstNode {
       for (Map temp in map[AstNodeKey.body]) {
         body.add(MethodDeclaration.fromMap(temp));
       }
-      this.body = null;
     }
   }
 }
@@ -205,16 +214,16 @@ class Program extends AstNode {
     if (map == null) return;
 
     if (map[AstNodeKey.body] != null) {
-      body = [];
+      this.body = [];
       for (Map temp in map[AstNodeKey.body]) {
-        body.add(ClassBody.fromMap(temp));
+        this.body.add(ClassBody.fromMap(temp));
       }
     }
 
     if (map[AstNodeKey.directive] != null) {
-      directive = [];
+      this.directive = [];
       for (Map temp in map[AstNodeKey.directive]) {
-        directive.add(ImportDirective.fromMap(temp));
+        this.directive.add(ImportDirective.fromMap(temp));
       }
     }
   }

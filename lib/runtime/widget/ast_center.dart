@@ -4,28 +4,28 @@ import 'package:dart_ast/runtime/widget/ast_widget.dart';
 import 'package:flutter/material.dart';
 
 ///
-class AstAppBar implements AstWidget {
+class AstCenter implements AstWidget {
   @override
-  String get name => "AppBar";
+  String get name => "Center";
 
   @override
   Widget build(Expression node) {
-    if (node.argumentList == null) return AppBar();
-    Widget title;
+    if (node.argumentList == null) return Center();
+    Widget child;
     String calleeValue = node.callee.value;
     if (calleeValue == name) {
       for (TypeArgument arg in node.argumentList) {
         switch (arg.name.value) {
-          case "title":
-            title = RuntimeWidget().build(arg.expression);
-            break;
-          case "centerTitle":
+          case "child":
+            child = RuntimeWidget().build(arg.expression);
             break;
           default:
             break;
         }
       }
-    } else if (calleeValue == "WjsAppBar") {}
-    return AppBar(title: title);
+    } else if (calleeValue == "WjsAppBar") {
+      //
+    }
+    return Center(child: child);
   }
 }

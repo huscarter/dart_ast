@@ -239,9 +239,13 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitFunctionExpression(FunctionExpression node) {
     // Logger.writeln("visitFunctionExpression source:${node.toSource()}");
+    Map parameters;
+    if(node.parameters!=null&&node.parameters.length>0){
+      parameters = _visitNode(node.parameters);
+    }
     return {
       "type": "FunctionExpression",
-      "parameters": _visitNode(node.parameters),
+      "parameters": parameters,
       "body": _visitNode(node.body),
       "isAsync": node.body.isAsynchronous,
     };
@@ -265,9 +269,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
     List<Map> parameterList;
     if (node.parameters != null && node.parameters.length > 0) {
-      parameterList = _visitNodeList(node.parameters);
+      return {"type": "FormalParameterList", "parameterList": _visitNodeList(node.parameters)};
     }
-    return {"type": "FormalParameterList", "parameterList": parameterList};
+    return null;
   }
 
   /// 构造函数参数类型

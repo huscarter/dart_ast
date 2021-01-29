@@ -1,33 +1,26 @@
-import 'dart:io';
+import 'dart:io' as io;
 
 /// 日志管理类
-class Logger{
+class Logger {
   static final isDebug = true;
 
   /// terminal 日志输出
-  static void writeln(String msg){
-    if(isDebug){
-      stdout.writeln(msg);
+  static void writeln(String msg) {
+    if (isDebug) {
+      io.stdout.writeln(msg);
     }
   }
 
-  static void write(String msg){
-    if(isDebug){
-      stdout.write(msg);
+  static void write(String msg) {
+    if (isDebug) {
+      io.stdout.write(msg);
     }
   }
 
   /// logcat 日志输出
-  static void print(String msg){
-    if(isDebug){
-      print(msg);
+  static void out(String tag, String msg) {
+    if (isDebug) {
+      print("$tag, $msg");
     }
   }
-
-  static void println(String msg){
-    if(isDebug){
-      println(msg);
-    }
-  }
-
 }
