@@ -6,6 +6,8 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:args/args.dart';
+import 'package:dart_ast/ast/ast_node_key.dart';
+import 'ast/ast_node_type.dart';
 import 'util/Logger.dart';
 
 ///
@@ -36,10 +38,10 @@ Future generate(String path) async {
       var compilationUnit = parseResult.unit;
 
       var astData = compilationUnit.accept(DartAstVisitor());
-      // var astData = compilationUnit.accept(TestAstVisitor());
+      // var astData = compilationUnit.accept(OrgAstVisitor());
       Logger.writeln(convert.jsonEncode(astData));
     } catch (e) {
-      // Logger.writeln('File parse error: ${e.toString()}');
+      Logger.writeln('File parse error: ${e.toString()}');
     }
   }
 }
@@ -77,9 +79,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     // Logger.writeln("visitCompilationUnit source:${node.toSource()}");
     if (node.declarations.isNotEmpty) {
       return {
-        "type": "Program",
-        "body": _visitNodeList(node.declarations),
-        "directive": _visitNodeList(node.directives),
+        AstNodeKey.type: AstNodeType.Program,
+        AstNodeKey.body: _visitNodeList(node.declarations),
+        AstNodeKey.directive: _visitNodeList(node.directives),
       };
     } else {
       return null;
@@ -94,9 +96,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     if (node.target != null) {
       node.target.accept(this);
       callee = {
-        "type": "MemberExpression",
-        "target": _visitNode(node.target),
-        "property": _visitNode(node.methodName),
+        AstNodeKey.type: AstNodeType.MemberExpression,
+        AstNodeKey.target: _visitNode(node.target),
+        AstNodeKey.property: _visitNode(node.methodName),
       };
     } else {
       callee = _visitNode(node.methodName);
@@ -110,10 +112,10 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     }
 
     return {
-      "type": "MethodInvocation",
-      "callee": callee,
-      "typeArguments": _visitNode(node.typeArguments),
-      "argumentList": argumentList,
+      AstNodeKey.type: AstNodeType.MethodInvocation,
+      AstNodeKey.callee: callee,
+      AstNodeKey.typeArguments: _visitNode(node.typeArguments),
+      AstNodeKey.argumentList: argumentList,
     };
   }
 
@@ -122,8 +124,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitBlock(Block node) {
     // Logger.writeln("visitBlock source:${node.toSource()}");
     return {
-      "type": "BlockStatement",
-      "statements": _visitNodeList(node.statements)
+      AstNodeKey.type: AstNodeType.BlockStatement,
+      AstNodeKey.statements: _visitNodeList(node.statements)
     };
   }
 
@@ -138,9 +140,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitVariableDeclaration(VariableDeclaration node) {
     // Logger.writeln("visitVariableDeclaration source:${node.toSource()}");
     return {
-      "type": "VariableDeclarator",
-      "name": _visitNode(node.name),
-      "init": _visitNode(node.initializer),
+      AstNodeKey.type: AstNodeType.VariableDeclarator,
+      AstNodeKey.name: _visitNode(node.name),
+      AstNodeKey.init: _visitNode(node.initializer),
     };
   }
 
@@ -155,9 +157,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitVariableDeclarationList(VariableDeclarationList node) {
     // Logger.writeln("visitVariableDeclarationList source:${node.toSource()}");
     return {
-      "type": "VariableDeclarationList",
-      "typeAnnotation": _visitNode(node.type),
-      "declarations": _visitNodeList(node.variables),
+      AstNodeKey.type: AstNodeType.VariableDeclarationList,
+      AstNodeKey.typeAnnotation: _visitNode(node.type),
+      AstNodeKey.declarations: _visitNodeList(node.variables),
     };
   }
 
@@ -165,15 +167,18 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitSimpleIdentifier(SimpleIdentifier node) {
     // Logger.writeln("visitSimpleIdentifier source:${node.toSource()}");
-    return {"type": "Identifier", "value": node.name};
+    return {
+      AstNodeKey.type: AstNodeType.Identifier,
+      AstNodeKey.value: node.name,
+    };
   }
 
   @override
   Map visitDeclaredIdentifier(DeclaredIdentifier node) {
     // Logger.writeln("visitDeclaredIdentifier source:${node.toSource()}");
     return {
-      "type": "DeclaredIdentifier",
-      "declared": _visitNode(node.identifier)
+      AstNodeKey.type: AstNodeType.DeclaredIdentifier,
+      AstNodeKey.identifier: _visitNode(node.identifier)
     };
   }
 
@@ -186,8 +191,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitExpressionFunctionBody(ExpressionFunctionBody node) {
     // Logger.writeln("visitExpressionFunctionBody source:${node.toSource()}");
     return {
-      "type": "ExpressionFunctionBody",
-      "expression": _visitNode(node.expression),
+      AstNodeKey.type: AstNodeType.ExpressionFunctionBody,
+      AstNodeKey.expression: _visitNode(node.expression),
     };
   }
 
@@ -195,8 +200,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitExpressionStatement(ExpressionStatement node) {
     // Logger.writeln("visitExpressionStatement source:${node.toSource()}");
     return {
-      "type": "ExpressionStatement",
-      "expression": _visitNode(node.expression),
+      AstNodeKey.type: AstNodeType.ExpressionStatement,
+      AstNodeKey.expression: _visitNode(node.expression),
     };
   }
 
@@ -205,17 +210,38 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitBinaryExpression(BinaryExpression node) {
     // Logger.writeln("visitBinaryExpression source:${node.toSource()}");
     return {
-      "type": "BinaryExpression",
-      "operator": node.operator.lexeme,
-      "left": _visitNode(node.leftOperand),
-      "right": _visitNode(node.rightOperand)
+      AstNodeKey.type: AstNodeType.BinaryExpression,
+      AstNodeKey.operator: node.operator.lexeme,
+      AstNodeKey.left: _visitNode(node.leftOperand),
+      AstNodeKey.right: _visitNode(node.rightOperand)
     };
   }
 
   @override
   Map visitIntegerLiteral(IntegerLiteral node) {
     // Logger.writeln("visitIntegerLiteral source:${node.toSource()}");
-    return {"type": "IntegerLiteral", "value": node.value};
+    return {
+      AstNodeKey.type: AstNodeType.IntegerLiteral,
+      AstNodeKey.value: node.value,
+    };
+  }
+
+  ///  {"expression":{"type":"ListLiteral","value":[]}}
+  @override
+  Map visitListLiteral(ListLiteral node) {
+    return {
+      AstNodeKey.type: AstNodeType.ListLiteral,
+      AstNodeKey.value: _visitNodeList(node.elements),
+    };
+  }
+
+  @override
+  Map visitMapLiteralEntry(MapLiteralEntry node) {
+    return {
+      AstNodeKey.type: AstNodeType.SetOrMapLiteral,
+      AstNodeKey.key: _visitNode(node.key),
+      AstNodeKey.value: _visitNode(node.value),
+    };
   }
 
   /// 构建函数声明
@@ -223,9 +249,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitFunctionDeclaration(FunctionDeclaration node) {
     // Logger.writeln("visitFunctionDeclaration source:${node.toSource()}");
     return {
-      "type": "FunctionDeclaration",
-      "name": _visitNode(node.name),
-      "expression": _visitNode(node.functionExpression),
+      AstNodeKey.type: AstNodeType.FunctionDeclaration,
+      AstNodeKey.name: _visitNode(node.name),
+      AstNodeKey.expression: _visitNode(node.functionExpression),
     };
   }
 
@@ -240,14 +266,14 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitFunctionExpression(FunctionExpression node) {
     // Logger.writeln("visitFunctionExpression source:${node.toSource()}");
     Map parameters;
-    if(node.parameters!=null&&node.parameters.length>0){
+    if (node.parameters != null && node.parameters.length > 0) {
       parameters = _visitNode(node.parameters);
     }
     return {
-      "type": "FunctionExpression",
-      "parameters": parameters,
-      "body": _visitNode(node.body),
-      "isAsync": node.body.isAsynchronous,
+      AstNodeKey.type: AstNodeType.FunctionExpression,
+      AstNodeKey.parameters: parameters,
+      AstNodeKey.body: _visitNode(node.body),
+      AstNodeKey.isAsync: node.body.isAsynchronous,
     };
   }
 
@@ -256,9 +282,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitSimpleFormalParameter(SimpleFormalParameter node) {
     // Logger.writeln("visitSimpleFormalParameter source:${node.toSource()}");
     return {
-      "type": "SimpleFormalParameter",
-      "parameterType": _visitNode(node.type),
-      "name": node.identifier.name
+      AstNodeKey.type: AstNodeType.SimpleFormalParameter,
+      AstNodeKey.parameterType: _visitNode(node.type),
+      AstNodeKey.name: node.identifier.name
     };
   }
 
@@ -269,7 +295,10 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
     List<Map> parameterList;
     if (node.parameters != null && node.parameters.length > 0) {
-      return {"type": "FormalParameterList", "parameterList": _visitNodeList(node.parameters)};
+      return {
+        AstNodeKey.type: AstNodeType.FormalParameterList,
+        AstNodeKey.parameterList: _visitNodeList(node.parameters)
+      };
     }
     return null;
   }
@@ -279,8 +308,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitTypeName(TypeName node) {
     // Logger.writeln("visitTypeName source:${node.toSource()}");
     return {
-      "type": "TypeName",
-      "name": node.name.name,
+      AstNodeKey.type: AstNodeType.TypeName,
+      AstNodeKey.name: node.name.name,
     };
   }
 
@@ -289,8 +318,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitReturnStatement(ReturnStatement node) {
     // Logger.writeln("visitReturnStatement source:${node.toSource()}");
     return {
-      "type": "ReturnStatement",
-      "expression": _visitNode(node.expression),
+      AstNodeKey.type: AstNodeType.ReturnStatement,
+      AstNodeKey.expression: _visitNode(node.expression),
     };
   }
 
@@ -299,13 +328,13 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitMethodDeclaration(MethodDeclaration node) {
     // Logger.writeln("visitMethodDeclaration source:${node.toSource()}");
     return {
-      "type": "MethodDeclaration",
-      "name": _visitNode(node.name),
-      "parameters": _visitNode(node.parameters),
-      "typeParameters": _visitNode(node.typeParameters),
-      "body": _visitNode(node.body),
-      "isAsync": node.body.isAsynchronous,
-      "returnType": _visitNode(node.returnType),
+      AstNodeKey.type: AstNodeType.MethodDeclaration,
+      AstNodeKey.name: _visitNode(node.name),
+      AstNodeKey.parameters: _visitNode(node.parameters),
+      AstNodeKey.typeParameters: _visitNode(node.typeParameters),
+      AstNodeKey.body: _visitNode(node.body),
+      AstNodeKey.isAsync: node.body.isAsynchronous,
+      AstNodeKey.returnType: _visitNode(node.returnType),
     };
   }
 
@@ -313,9 +342,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitNamedExpression(NamedExpression node) {
     // Logger.writeln("visitNamedExpression source:${node.toSource()}");
     return {
-      "type": "NamedExpression",
-      "name": _visitNode(node.name),
-      "expression": _visitNode(node.expression),
+      AstNodeKey.type: AstNodeType.NamedExpression,
+      AstNodeKey.name: _visitNode(node.name),
+      AstNodeKey.expression: _visitNode(node.expression),
     };
   }
 
@@ -323,9 +352,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitPrefixedIdentifier(PrefixedIdentifier node) {
     // Logger.writeln("visitPrefixedIdentifier source:${node.toSource()}");
     return {
-      "type": "PrefixedIdentifier",
-      "identifier": _visitNode(node.identifier),
-      "prefix": _visitNode(node.prefix),
+      AstNodeKey.type: AstNodeType.PrefixedIdentifier,
+      AstNodeKey.identifier: _visitNode(node.identifier),
+      AstNodeKey.prefix: _visitNode(node.prefix),
     };
   }
 
@@ -338,34 +367,40 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
       metadata = _visitNodeList(node.metadata);
     }
     return {
-      "type": "ClassDeclaration",
-      "name": _visitNode(node.name),
-      "superClause": _visitNode(node.extendsClause),
-      "implementsClause": _visitNode(node.implementsClause),
-      "widthClause": _visitNode(node.withClause),
-      'metadata': metadata,
-      "body": _visitNodeList(node.members),
+      AstNodeKey.type: AstNodeType.ClassDeclaration,
+      AstNodeKey.name: _visitNode(node.name),
+      AstNodeKey.superClause: _visitNode(node.extendsClause),
+      AstNodeKey.implementsClause: _visitNode(node.implementsClause),
+      AstNodeKey.widthClause: _visitNode(node.withClause),
+      AstNodeKey.metadata: metadata,
+      AstNodeKey.body: _visitNodeList(node.members),
     };
   }
 
   @override
   Map visitSimpleStringLiteral(SimpleStringLiteral node) {
     // Logger.writeln("visitSimpleStringLiteral source:${node.toSource()}");
-    return {"type": "StringLiteral", "value": node.value};
+    return {
+      AstNodeKey.type: AstNodeType.StringLiteral,
+      AstNodeKey.value: node.value,
+    };
   }
 
   @override
   Map visitBooleanLiteral(BooleanLiteral node) {
     // Logger.writeln("visitBooleanLiteral source:${node.toSource()}");
-    return {"type": "BooleanLiteral", "value": node.value};
+    return {
+      AstNodeKey.type: AstNodeType.BooleanLiteral,
+      AstNodeKey.value: node.value,
+    };
   }
 
   @override
   Map visitArgumentList(ArgumentList node) {
     // Logger.writeln("visitArgumentList source:${node.toSource()}");
     return {
-      "type": "ArgumentList",
-      "argumentList": _visitNodeList(node.arguments)
+      AstNodeKey.type: AstNodeKey.argumentList,
+      AstNodeKey.argumentList: _visitNodeList(node.arguments)
     };
   }
 
@@ -385,23 +420,26 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitImplementsClause(ImplementsClause node) {
     // Logger.writeln("visitImplementsClause source:${node.toSource()}");
     return {
-      "type": "ImplementsClause",
-      "implements": _visitNodeList(node.interfaces)
+      AstNodeKey.type: AstNodeType.ImplementsClause,
+      AstNodeKey.implements: _visitNodeList(node.interfaces)
     };
   }
 
   @override
   Map visitWithClause(WithClause node) {
     // Logger.writeln("visitWithClause source:${node.toSource()}");
-    return {"type": "WithClause", "withs": _visitNodeList(node.mixinTypes)};
+    return {
+      AstNodeKey.type: AstNodeType.WithClause,
+      "withs": _visitNodeList(node.mixinTypes),
+    };
   }
 
   @override
   Map visitPropertyAccess(PropertyAccess node) {
     // Logger.writeln("visitPropertyAccess source:${node.toSource()}");
     return {
-      "type": "PropertyAccess",
-      "name": _visitNode(node.propertyName),
+      AstNodeKey.type: AstNodeType.PropertyAccess,
+      AstNodeKey.name: _visitNode(node.propertyName),
       "target": _visitNode(node.target),
     };
   }
@@ -410,8 +448,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitHideCombinator(HideCombinator node) {
     // Logger.writeln("visitHideCombinator source:${node.toSource()}");
     return {
-      "type": "HideCombinator ",
-      "hiddenNames": _visitNodeList(node.hiddenNames)
+      AstNodeKey.type: AstNodeType.HideCombinator,
+      AstNodeKey.hiddenNames: _visitNodeList(node.hiddenNames)
     };
   }
 
@@ -419,8 +457,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   Map visitShowCombinator(ShowCombinator node) {
     // Logger.writeln("visitShowCombinator source:${node.toSource()}");
     return {
-      "type": "ShowCombinator ",
-      "shownNames": _visitNodeList(node.shownNames)
+      AstNodeKey.type: AstNodeType.ShowCombinator,
+      AstNodeKey.shownNames: _visitNodeList(node.shownNames)
     };
   }
 
@@ -432,20 +470,23 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     // LogUtil.writeln( "visitImportDirective uri:${node.uri}, asKeyword:${node.asKeyword}, prefix:${node.prefix}");
 
     List<Map> combinators;
-    if (node.combinators != null) {
+    if (node.combinators != null && node.combinators.length > 0) {
       combinators = _visitNodeList(node.combinators);
     }
 
     return {
-      "type": "ImportDirective",
-      "uri": _visitNode(node.uri),
-      "prefix": _visitNode(node.prefix), // prefix为 as 的昵称
-      "combinators": combinators
+      AstNodeKey.type: AstNodeType.ImportDirective,
+      AstNodeKey.uri: _visitNode(node.uri),
+      AstNodeKey.prefix: _visitNode(node.prefix), // prefix为 as 的昵称
+      AstNodeKey.combinators: combinators
     };
   }
-}
 
-class TestAstVisitor extends GeneralizingAstVisitor<Map> {
+
+} // end DartAstVisitor
+
+/// 用于未封装前的[AstNode]数据展示，通过输出[AstNode.runtimeType]可以判断需要封住的内容
+class OrgAstVisitor extends GeneralizingAstVisitor<Map> {
   @override
   Map visitNode(AstNode node) {
     Logger.writeln("ast node: ${node.runtimeType}-->${node.toSource()}");

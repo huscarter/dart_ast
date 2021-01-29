@@ -1,5 +1,5 @@
 ///
-class AstNodeKey{
+class AstNodeKey {
   AstNodeKey._();
 
   ///
@@ -21,12 +21,28 @@ class AstNodeKey{
   static const String argumentList = "argumentList";
   static const String typeArguments = "typeArguments";
   static const String value = "value";
+  static const String key = "key";
   static const String combinators = "combinators";
-  static const String uri = "uri"; // import [uri]
-  static const String prefix = "prefix"; // import 'x/x' as [prefix] or [prefix].black.
-  static const String statements = "statements"; // for the method block statement
+
+  /// import [uri]
+  static const String uri = "uri";
+
+  /// import 'x/x' as [prefix] or [prefix].black.
+  static const String prefix = "prefix";
+
+  /// for the method block statement
+  static const String statements = "statements";
   static const String directive = "directive";
   static const String identifier = "identifier";
-
-
+  static const String target = "target";
+  static const String property = "property";
+  static const String init = "init";
+  static const String typeAnnotation = "typeAnnotation";
+  static const String declarations = "declarations";
+  static const String operator = "operator";
+  static const String left = "left";
+  static const String right = "right";
+  static const String implements = "implements";
+  static const String hiddenNames = "hiddenNames";
+  static const String shownNames = "shownNames";
 }

@@ -12,10 +12,14 @@ import 'package:flutter/cupertino.dart';
 /// AstNode 基类。
 class AstNode {
   static final String tag = "AstNode";
+
+  ///
   String type;
 
+  ///
   Map map;
 
+  ///
   AstNode({String type, Map map}) {
     if (map == null) return;
     if (type == null) {
@@ -27,6 +31,7 @@ class AstNode {
     // Logger.out(tag, "map:$map");
   }
 
+  /// For json decode
   Map<String, dynamic> toJson() {
     return map;
   }
@@ -55,6 +60,8 @@ class TypeName extends AstNode {
 /// 此类一般用于描述"type"为"MethodInvocation"的信息
 /// 当我们通过[AstNode]生成[Widget]时，一般就是通过传入此信息来build
 class Expression extends AstNode {
+  static final String tag = "Expression";
+
   Identifier callee;
   List<TypeArgument> typeArguments;
 
@@ -66,6 +73,8 @@ class Expression extends AstNode {
 
   /// "prefix":{"type":"Identifier", "value":"Colors"}
   Identifier prefix;
+
+  dynamic value;
 
   Expression.fromMap(Map map) : super(map: map) {
     if (map == null) return;
@@ -82,6 +91,24 @@ class Expression extends AstNode {
     }
     this.identifier = Identifier.fromMap(map[AstNodeKey.identifier]);
     this.prefix = Identifier.fromMap(map[AstNodeKey.prefix]);
+
+    // for parse value
+    var tempValue = map[AstNodeKey.value];
+    if (tempValue != null) {
+      if (tempValue is String ||
+          tempValue is int ||
+          tempValue is double ||
+          tempValue is bool) {
+        this.value = tempValue;
+      }else if(tempValue is List){
+        // Logger.out(tag, "is list");
+        List<Expression> tempList = [];
+        for(Map tempValueMap in tempValue){
+          tempList.add(Expression.fromMap(tempValueMap));
+        }
+        this.value = tempList;
+      }
+    }
   }
 }
 
@@ -91,15 +118,17 @@ class TypeArgument extends AstNode {
   Expression expression;
 
   /// 当此argument为最后一层时，此时[value]将有具体的值，而[expression]则不会有值。
-  String value;
+  dynamic value;
 
   TypeArgument.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.name = Identifier.fromMap(map[AstNodeKey.name]);
-    this.value = map[AstNodeKey.value];
+
     if (map[AstNodeKey.expression] != null) {
       this.expression = Expression.fromMap(map[AstNodeKey.expression]);
     }
+
+    this.value = map[AstNodeKey.value];
   }
 }
 

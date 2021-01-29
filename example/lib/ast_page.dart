@@ -10,20 +10,32 @@ class AstPage extends StatefulWidget {
 
 ///
 class _AstPageState extends State<AstPage> {
+  // @override
+  // Widget build(BuildContext context) {
+  //   // test();
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text("AstPage"),
+  //     ),
+  //     body: Center(
+  //       child: Text("Hello World"),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     // test();
     return Scaffold(
       appBar: AppBar(
-        title: Text("AstPage", style: TextStyle(color: Colors.white)),
+        title: Text("AstPage"),
       ),
-      body: Center(
-        child: Text("Hello World"),
+      body: Column(
+        children: <Widget>[
+          Text("1"),
+          Text("2"),
+        ],
       ),
     );
   }
-
-// void test(){
-//   Logger.print("msg");
-// }
 }

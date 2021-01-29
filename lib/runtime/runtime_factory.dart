@@ -1,6 +1,8 @@
 import 'package:dart_ast/ast/ast_node.dart';
 import 'package:dart_ast/runtime/widget/ast_appbar.dart';
 import 'package:dart_ast/runtime/widget/ast_center.dart';
+import 'package:dart_ast/runtime/widget/ast_column.dart';
+import 'package:dart_ast/runtime/widget/ast_container.dart';
 import 'package:dart_ast/runtime/widget/ast_scaffold.dart';
 import 'package:dart_ast/runtime/widget/ast_text.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
@@ -12,9 +14,6 @@ class RuntimeFactory {
   static final String tag = "RuntimeFactory";
 
   ///
-  // static final _instance = RuntimeWidget._();
-
-  ///
   // static final List<AstWidget> astWidgets = [
   //   AstText(),
   //   AstAppBar(),
@@ -23,10 +22,6 @@ class RuntimeFactory {
   // ];
 
   RuntimeFactory._();
-
-  // factory RuntimeWidget() {
-  //   return _instance;
-  // }
 
   /// "expression":{"type":"MethodInvocation", "callee":{"type":"Identifier", "value":"Scaffold"}, "typeArguments":null,"argumentList":{}}
   static Widget buildWidget(Expression node) {
@@ -40,6 +35,10 @@ class RuntimeFactory {
         return AstScaffold().build(node);
       }else if(calleeValue == getName(AstText.tag)){
         return AstText().build(node);
+      }else if(calleeValue == getName(AstContainer.tag)){
+        return AstContainer().build(node);
+      }else if(calleeValue == getName(AstColumn.tag)){
+        return AstColumn().build(node);
       }
       return Container();
     } catch (e) {

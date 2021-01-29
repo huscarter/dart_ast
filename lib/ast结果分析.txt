@@ -1,5 +1,6 @@
 // 执行语句
 dart lib/dart_ast.dart -f lib/test.dart
+dart lib/dart_ast.dart -f example/lib/ast_page.dart
 
 // 日志输出顺序
 File path: lib/test.dart
@@ -44,7 +45,6 @@ visitSimpleIdentifier source:a
 visitIntegerLiteral source:1
 
 //
-
 ast node: ImportDirectiveImpl-->import 'package:dart_ast/util/logger.dart';
 ast node: SimpleStringLiteralImpl-->'package:dart_ast/util/logger.dart'
 ast node: ImportDirectiveImpl-->import 'package:flutter/cupertino.dart';
@@ -71,7 +71,7 @@ ast node: ExpressionFunctionBodyImpl-->=> _AstPageState();
 ast node: MethodInvocationImpl-->_AstPageState()
 ast node: SimpleIdentifierImpl-->_AstPageState
 ast node: ArgumentListImpl-->()
-ast node: ClassDeclarationImpl-->class _AstPageState extends State<AstPage> {@override Widget build(BuildContext context) {test(); return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")));} void test() {Logger.print("msg");}}
+ast node: ClassDeclarationImpl-->class _AstPageState extends State<AstPage> {@override Widget build(BuildContext context) {return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}}
 ast node: CommentImpl-->
 ast node: DeclaredSimpleIdentifier-->_AstPageState
 ast node: ExtendsClauseImpl-->extends State<AstPage>
@@ -80,7 +80,7 @@ ast node: SimpleIdentifierImpl-->State
 ast node: TypeArgumentListImpl--><AstPage>
 ast node: TypeNameImpl-->AstPage
 ast node: SimpleIdentifierImpl-->AstPage
-ast node: MethodDeclarationImpl-->@override Widget build(BuildContext context) {test(); return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")));}
+ast node: MethodDeclarationImpl-->@override Widget build(BuildContext context) {return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}
 ast node: AnnotationImpl-->@override
 ast node: SimpleIdentifierImpl-->override
 ast node: TypeNameImpl-->Widget
@@ -91,16 +91,12 @@ ast node: SimpleFormalParameterImpl-->BuildContext context
 ast node: TypeNameImpl-->BuildContext
 ast node: SimpleIdentifierImpl-->BuildContext
 ast node: DeclaredSimpleIdentifier-->context
-ast node: BlockFunctionBodyImpl-->{test(); return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")));}
-ast node: BlockImpl-->{test(); return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")));}
-ast node: ExpressionStatementImpl-->test();
-ast node: MethodInvocationImpl-->test()
-ast node: SimpleIdentifierImpl-->test
-ast node: ArgumentListImpl-->()
-ast node: ReturnStatementImpl-->return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")));
-ast node: MethodInvocationImpl-->Scaffold(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")))
+ast node: BlockFunctionBodyImpl-->{return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}
+ast node: BlockImpl-->{return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}
+ast node: ReturnStatementImpl-->return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));
+ast node: MethodInvocationImpl-->Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]))
 ast node: SimpleIdentifierImpl-->Scaffold
-ast node: ArgumentListImpl-->(appBar: AppBar(title: Text("AstPage")), body: Center(child: Text("Hello World")))
+ast node: ArgumentListImpl-->(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]))
 ast node: NamedExpressionImpl-->appBar: AppBar(title: Text("AstPage"))
 ast node: LabelImpl-->appBar:
 ast node: SimpleIdentifierImpl-->appBar
@@ -114,29 +110,24 @@ ast node: MethodInvocationImpl-->Text("AstPage")
 ast node: SimpleIdentifierImpl-->Text
 ast node: ArgumentListImpl-->("AstPage")
 ast node: SimpleStringLiteralImpl-->"AstPage"
-ast node: NamedExpressionImpl-->body: Center(child: Text("Hello World"))
+ast node: NamedExpressionImpl-->body: Column(children: <Widget>[Text("1"), Text("2")])
 ast node: LabelImpl-->body:
 ast node: SimpleIdentifierImpl-->body
-ast node: MethodInvocationImpl-->Center(child: Text("Hello World"))
-ast node: SimpleIdentifierImpl-->Center
-ast node: ArgumentListImpl-->(child: Text("Hello World"))
-ast node: NamedExpressionImpl-->child: Text("Hello World")
-ast node: LabelImpl-->child:
-ast node: SimpleIdentifierImpl-->child
-ast node: MethodInvocationImpl-->Text("Hello World")
+ast node: MethodInvocationImpl-->Column(children: <Widget>[Text("1"), Text("2")])
+ast node: SimpleIdentifierImpl-->Column
+ast node: ArgumentListImpl-->(children: <Widget>[Text("1"), Text("2")])
+ast node: NamedExpressionImpl-->children: <Widget>[Text("1"), Text("2")]
+ast node: LabelImpl-->children:
+ast node: SimpleIdentifierImpl-->children
+ast node: ListLiteralImpl--><Widget>[Text("1"), Text("2")]
+ast node: TypeArgumentListImpl--><Widget>
+ast node: TypeNameImpl-->Widget
+ast node: SimpleIdentifierImpl-->Widget
+ast node: MethodInvocationImpl-->Text("1")
 ast node: SimpleIdentifierImpl-->Text
-ast node: ArgumentListImpl-->("Hello World")
-ast node: SimpleStringLiteralImpl-->"Hello World"
-ast node: MethodDeclarationImpl-->void test() {Logger.print("msg");}
-ast node: TypeNameImpl-->void
-ast node: SimpleIdentifierImpl-->void
-ast node: DeclaredSimpleIdentifier-->test
-ast node: FormalParameterListImpl-->()
-ast node: BlockFunctionBodyImpl-->{Logger.print("msg");}
-ast node: BlockImpl-->{Logger.print("msg");}
-ast node: ExpressionStatementImpl-->Logger.print("msg");
-ast node: MethodInvocationImpl-->Logger.print("msg")
-ast node: SimpleIdentifierImpl-->Logger
-ast node: SimpleIdentifierImpl-->print
-ast node: ArgumentListImpl-->("msg")
-ast node: SimpleStringLiteralImpl-->"msg"
+ast node: ArgumentListImpl-->("1")
+ast node: SimpleStringLiteralImpl-->"1"
+ast node: MethodInvocationImpl-->Text("2")
+ast node: SimpleIdentifierImpl-->Text
+ast node: ArgumentListImpl-->("2")
+ast node: SimpleStringLiteralImpl-->"2"

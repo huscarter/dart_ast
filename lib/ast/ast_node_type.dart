@@ -61,4 +61,12 @@ class AstNodeType{
   static const String SwitchCase = "SwitchCase";
   static const String SwitchDefault = "SwitchDefault";
 
+  static const String ImportDirective = "ImportDirective";
+  static const String ShowCombinator = "ShowCombinator";
+  static const String HideCombinator = "HideCombinator";
+  static const String WithClause = "WithClause";
+  static const String ImplementsClause = "ImplementsClause";
+  static const String ExpressionFunctionBody = "ExpressionFunctionBody";
+  static const String DeclaredIdentifier = "DeclaredIdentifier";
+
 }
