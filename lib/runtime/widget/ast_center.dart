@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 class AstCenter extends AstWidget {
   static final String tag = "AstCenter";
 
+  AstCenter(Expression node) : super(node);
+
   @override
-  Widget build(Expression node) {
+  Widget build() {
     if (node.argumentList == null) return Center();
     Widget child;
     for (TypeArgument arg in node.argumentList) {

@@ -9,8 +9,10 @@ class AstScaffold extends AstWidget {
 
   static final String tag = "AstScaffold";
 
+  AstScaffold(Expression node) : super(node);
+
   @override
-  Widget build(Expression node) {
+  Widget build() {
     if (node.argumentList == null) return Scaffold();
     Widget appBar;
     Widget body;

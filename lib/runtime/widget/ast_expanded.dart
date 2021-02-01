@@ -1,40 +1,35 @@
+import 'dart:convert';
+
 import 'package:dart_ast/ast/ast_node.dart';
 import 'package:dart_ast/runtime/argument/arg_color.dart';
 import 'package:dart_ast/runtime/runtime_factory.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
+import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/material.dart';
 
 ///
-class AstSizedBox extends AstWidget {
-  static final String tag = "AstSizedBox";
+class AstExpanded extends AstWidget {
+  static final String tag = "AstExpanded";
 
-  AstSizedBox(Expression node) : super(node);
+  AstExpanded(Expression node) : super(node);
 
   @override
   Widget build() {
-    if (node.argumentList == null) return SizedBox();
+    if (node.argumentList == null) return Expanded();
     Widget child;
-    double width;
-    double height;
+    int flex;
     for (TypeArgument arg in node.argumentList) {
       switch (arg.name.value) {
         case "child":
           child = RuntimeFactory.buildWidget(arg.expression);
           break;
-        case "width":
-          width = double.parse(arg.expression.value.toString());
-          break;
-        case "height":
-          height = double.parse(arg.expression.value.toString());
+        case "flex":
+          flex = arg.expression.value;
           break;
         default:
           break;
       }
     }
-    return SizedBox(
-      child: child,
-      width: width,
-      height: height,
-    );
+    return Expanded(flex: flex, child: child);
   }
 }

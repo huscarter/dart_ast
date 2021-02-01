@@ -25,6 +25,7 @@ class AstNodeType{
   static const String ArgumentList = "ArgumentList";
   static const String TypeName = "TypeName";
   static const String Identifier = "Identifier";
+  static const String PrefixedIdentifier = "PrefixedIdentifier";
 
   ///
   static const String StringLiteral = "StringLiteral";
@@ -34,7 +35,6 @@ class AstNodeType{
   static const String ListLiteral = "ListLiteral";
   static const String NullLiteral = "NullLiteral";
   static const String SetOrMapLiteral = "SetOrMapLiteral";
-  static const String PrefixedIdentifier = "PrefixedIdentifier";
 
   ///
   static const String NamedExpression = "NamedExpression";

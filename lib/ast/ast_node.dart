@@ -1,5 +1,6 @@
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:dart_ast/ast/ast_node_key.dart';
+import 'package:dart_ast/ast/ast_node_type.dart';
 import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -41,9 +42,15 @@ class AstNode {
 class Identifier extends AstNode {
   String value;
 
+  Identifier target;
+
+  Identifier property;
+
   Identifier.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.value = map[AstNodeKey.value];
+    this.target = Identifier.fromMap(map[AstNodeKey.target]);
+    this.property = Identifier.fromMap(map[AstNodeKey.property]);
   }
 }
 
@@ -66,7 +73,9 @@ class Expression extends AstNode {
   List<TypeArgument> typeArguments;
 
   /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
-  List<TypeArgument> argumentList;
+  /// 参数列表类型有可能的情况：TypeArgument,Expression,Identifier(TypeArgument contain Identifier)
+  /// Text(Text.rich(),style:TextStyle())
+  List<dynamic> argumentList;
 
   /// "identifier":{"type":"Identifier", "value":"black"}
   Identifier identifier;
@@ -74,6 +83,7 @@ class Expression extends AstNode {
   /// "prefix":{"type":"Identifier", "value":"Colors"}
   Identifier prefix;
 
+  /// type of Identifier or List<Expression>
   dynamic value;
 
   Expression.fromMap(Map map) : super(map: map) {
@@ -86,7 +96,14 @@ class Expression extends AstNode {
         map[AstNodeKey.argumentList][AstNodeKey.argumentList] != null) {
       argumentList = [];
       for (Map temp in map[AstNodeKey.argumentList][AstNodeKey.argumentList]) {
-        argumentList.add(TypeArgument.fromMap(temp));
+        // is Expression
+        if (temp[AstNodeKey.type] == AstNodeType.MethodInvocation) {
+          argumentList.add(Expression.fromMap(temp));
+        }
+        // is TypeArgument or Identifier
+        else {
+          argumentList.add(TypeArgument.fromMap(temp));
+        }
       }
     }
     this.identifier = Identifier.fromMap(map[AstNodeKey.identifier]);
@@ -100,10 +117,10 @@ class Expression extends AstNode {
           tempValue is double ||
           tempValue is bool) {
         this.value = tempValue;
-      }else if(tempValue is List){
+      } else if (tempValue is List) {
         // Logger.out(tag, "is list");
         List<Expression> tempList = [];
-        for(Map tempValueMap in tempValue){
+        for (Map tempValueMap in tempValue) {
           tempList.add(Expression.fromMap(tempValueMap));
         }
         this.value = tempList;
@@ -112,7 +129,7 @@ class Expression extends AstNode {
   }
 }
 
-///
+/// for argumentList value
 class TypeArgument extends AstNode {
   Identifier name;
   Expression expression;

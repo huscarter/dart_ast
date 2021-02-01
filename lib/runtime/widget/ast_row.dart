@@ -8,14 +8,14 @@ import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/material.dart';
 
 ///
-class AstColumn extends AstWidget {
-  static final String tag = "AstColumn";
+class AstRow extends AstWidget {
+  static final String tag = "AstRow";
 
-  AstColumn(Expression node) : super(node);
+  AstRow(Expression node) : super(node);
 
   @override
   Widget build() {
-    if (node.argumentList == null) return Column();
+    if (node.argumentList == null) return Row();
     List<Widget> children = [];
     for (TypeArgument arg in node.argumentList) {
       switch (arg.name.value) {
@@ -29,6 +29,6 @@ class AstColumn extends AstWidget {
           break;
       }
     }
-    return Column(children: children);
+    return Row(children: children);
   }
 }

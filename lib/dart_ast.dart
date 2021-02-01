@@ -46,7 +46,7 @@ Future generate(String path) async {
   }
 }
 
-///
+/// ast 生成器
 class DartAstVisitor extends SimpleAstVisitor<Map> {
   ///
   Map _visitNode(AstNode node) {
@@ -218,6 +218,15 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   }
 
   @override
+  Map visitSimpleStringLiteral(SimpleStringLiteral node) {
+    // Logger.writeln("visitSimpleStringLiteral source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.StringLiteral,
+      AstNodeKey.value: node.value,
+    };
+  }
+
+  @override
   Map visitIntegerLiteral(IntegerLiteral node) {
     // Logger.writeln("visitIntegerLiteral source:${node.toSource()}");
     return {
@@ -226,9 +235,28 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     };
   }
 
+  @override
+  Map visitBooleanLiteral(BooleanLiteral node) {
+    // Logger.writeln("visitBooleanLiteral source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.BooleanLiteral,
+      AstNodeKey.value: node.value,
+    };
+  }
+
+  @override
+  Map visitDoubleLiteral(DoubleLiteral node) {
+    // Logger.writeln("visitDoubleLiteral source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.DoubleLiteral,
+      AstNodeKey.value: node.value,
+    };
+  }
+
   ///  {"expression":{"type":"ListLiteral","value":[]}}
   @override
   Map visitListLiteral(ListLiteral node) {
+    // Logger.writeln("visitListLiteral source:${node.toSource()}");
     return {
       AstNodeKey.type: AstNodeType.ListLiteral,
       AstNodeKey.value: _visitNodeList(node.elements),
@@ -237,6 +265,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 
   @override
   Map visitMapLiteralEntry(MapLiteralEntry node) {
+    // Logger.writeln("visitMapLiteralEntry source:${node.toSource()}");
     return {
       AstNodeKey.type: AstNodeType.SetOrMapLiteral,
       AstNodeKey.key: _visitNode(node.key),
@@ -378,24 +407,6 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   }
 
   @override
-  Map visitSimpleStringLiteral(SimpleStringLiteral node) {
-    // Logger.writeln("visitSimpleStringLiteral source:${node.toSource()}");
-    return {
-      AstNodeKey.type: AstNodeType.StringLiteral,
-      AstNodeKey.value: node.value,
-    };
-  }
-
-  @override
-  Map visitBooleanLiteral(BooleanLiteral node) {
-    // Logger.writeln("visitBooleanLiteral source:${node.toSource()}");
-    return {
-      AstNodeKey.type: AstNodeType.BooleanLiteral,
-      AstNodeKey.value: node.value,
-    };
-  }
-
-  @override
   Map visitArgumentList(ArgumentList node) {
     // Logger.writeln("visitArgumentList source:${node.toSource()}");
     return {
@@ -481,8 +492,6 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
       AstNodeKey.combinators: combinators
     };
   }
-
-
 } // end DartAstVisitor
 
 /// 用于未封装前的[AstNode]数据展示，通过输出[AstNode.runtimeType]可以判断需要封住的内容

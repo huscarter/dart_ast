@@ -8,8 +8,10 @@ import 'package:flutter/material.dart';
 class AstContainer extends AstWidget {
   static final String tag = "AstContainer";
 
+  AstContainer(Expression node) : super(node);
+
   @override
-  Widget build(Expression node) {
+  Widget build() {
     if (node.argumentList == null) return Container();
     Widget child;
     double width;

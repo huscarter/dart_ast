@@ -89,8 +89,10 @@ class HomePage extends StatelessPage {
 class TestStatic extends AstWidget{
   static String name = "TestStatic";
 
+  TestStatic(Expression node) : super(node);
+
   @override
-  Widget build(Expression node) {
+  Widget build() {
     return Text("");
   }
 
