@@ -10,7 +10,7 @@ import 'package:dart_ast/runtime/widget/ast_flexiblespacebar.dart';
 import 'package:dart_ast/runtime/widget/ast_row.dart';
 import 'package:dart_ast/runtime/widget/ast_scaffold.dart';
 import 'package:dart_ast/runtime/widget/ast_sliverappbar.dart';
-import 'package:dart_ast/runtime/widget/ast_slivergrid.dart';
+import 'package:dart_ast/runtime/widget/ast_sliver.dart';
 import 'package:dart_ast/runtime/widget/ast_text.dart';
 import 'package:dart_ast/runtime/widget/ast_textspan.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
@@ -26,7 +26,7 @@ class RuntimeFactory {
 
   /// "expression":{"type":"MethodInvocation", "callee":{"type":"Identifier", "value":"Scaffold"}, "typeArguments":null,"argumentList":{}}
   static dynamic buildWidget(Expression node) {
-    Logger.out(tag, "calleeValue:${node.callee.toJson()}");
+    // Logger.out(tag, "calleeValue:${node.callee.toJson()}");
     // Logger.out(tag, "node:${node.toJson()}");
     try {
       if (node.callee.type == AstNodeType.MemberExpression) {
@@ -62,6 +62,12 @@ class RuntimeFactory {
           return AstCustomScrollView(node).build();
         } else if (calleeValue == getName(AstSliverGrid.tag)) {
           return AstSliverGrid(node).build();
+        } else if (calleeValue == getName(AstSliverGridDelegateWithMaxCrossAxisExtent.tag)) {
+          return AstSliverGridDelegateWithMaxCrossAxisExtent(node).build();
+        } else if (calleeValue == getName(AstSliverChildBuilderDelegate.tag)) {
+          return AstSliverChildBuilderDelegate(node).build();
+        } else if (calleeValue == getName(AstSliverFixedExtentList.tag)) {
+          return AstSliverFixedExtentList(node).build();
         }
       }
       return Center(child: Text("No ast widget matched"));

@@ -27,18 +27,18 @@ class _AstPageState extends State<AstPage> {
   Widget build(BuildContext context) {
     // test();
     return Scaffold(
-      appBar: AppBar(
-        title: Text("AstPage"),
-      ),
+      // appBar: AppBar(
+      //   title: Text("AstPage"),
+      // ),
       body: CustomScrollView(
         slivers: <Widget>[
-          // SliverAppBar(
-          //   pinned: true,
-          //   expandedHeight: 250.0,
-          //   flexibleSpace: FlexibleSpaceBar(
-          //     title: Text('Demo'),
-          //   ),
-          // ),
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 250.0,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text('Demo'),
+            ),
+          ),
           SliverGrid(
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 200.0,
@@ -50,25 +50,28 @@ class _AstPageState extends State<AstPage> {
               (BuildContext context, int index) {
                 return Container(
                   alignment: Alignment.center,
-                  color: Colors.teal[100 * (index % 9)],
-                  child: Text('Grid Item $index'),
+                  color: Colors.teal,
+                  child: Text('Grid Item'),
                 );
               },
               childCount: 20,
             ),
           ),
-          // SliverFixedExtentList(
-          //   itemExtent: 50.0,
-          //   delegate: SliverChildBuilderDelegate(
-          //     (BuildContext context, int index) {
-          //       return Container(
-          //         alignment: Alignment.center,
-          //         color: Colors.lightBlue[100 * (index % 9)],
-          //         child: Text('List Item $index'),
-          //       );
-          //     },
-          //   ),
-          // ),
+          SliverFixedExtentList(
+            itemExtent: 50.0,
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 1.0, color: Colors.white),
+                    color: Colors.lightBlue,
+                  ),
+                  alignment: Alignment.center,
+                  child: Text('List Item'),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );

@@ -76,7 +76,5 @@ class _RuntimePageState extends State<RuntimePage> {
 
   ///
   @override
-  Widget build(BuildContext context) {
-    return _astWidget ?? _loadWidget;
-  }
+  Widget build(BuildContext context) => _astWidget ?? _loadWidget;
 }

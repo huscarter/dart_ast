@@ -134,6 +134,10 @@ class TypeArgument extends AstNode {
   Identifier name;
   Expression expression;
 
+  /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
+  ///  {"body":{"type":"BlockStatement","statements":[{ "type":"ReturnStatement", "expression":{}}]}}
+  List<BlockStatement> body;
+
   /// 当此argument为最后一层时，此时[value]将有具体的值，而[expression]则不会有值。
   dynamic value;
 
@@ -146,6 +150,14 @@ class TypeArgument extends AstNode {
     }
 
     this.value = map[AstNodeKey.value];
+
+    if (map[AstNodeKey.body] != null &&
+        map[AstNodeKey.body][AstNodeKey.statements] != null) {
+      this.body = [];
+      for (Map temp in map[AstNodeKey.body][AstNodeKey.statements]) {
+        this.body.add(BlockStatement.fromMap(temp));
+      }
+    }
   }
 }
 

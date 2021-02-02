@@ -1,5 +1,7 @@
 import 'package:dart_ast/ast/ast_node.dart';
+import 'package:dart_ast/runtime/argument/arg_alignment.dart';
 import 'package:dart_ast/runtime/argument/arg_color.dart';
+import 'package:dart_ast/runtime/argument/arg_decoration.dart';
 import 'package:dart_ast/runtime/runtime_factory.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +19,8 @@ class AstContainer extends AstWidget {
     double width;
     double height;
     Color color;
+    Alignment alignment;
+    Decoration decoration;
     for (TypeArgument arg in node.argumentList) {
       switch (arg.name.value) {
         case "child":
@@ -31,15 +35,23 @@ class AstContainer extends AstWidget {
         case "color":
           color = ArgColor.buildColor(arg.expression);
           break;
+        case "alignment":
+          alignment = ArgAlignment.buildAlignment(arg.expression);
+          break;
+        case "decoration":
+          decoration = ArgDecoration.buildDecoration(arg.expression);
+          break;
         default:
           break;
       }
     }
     return Container(
+      decoration: decoration,
       child: child,
       width: width,
       height: height,
       color: color,
+      alignment: alignment,
     );
   }
 }

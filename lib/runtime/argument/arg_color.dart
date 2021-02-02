@@ -12,8 +12,12 @@ class ArgColor {
         return Colors.black;
       } else if (value == "white") {
         return Colors.white;
-      }else if (value == "blue") {
+      } else if (value == "blue") {
         return Colors.blue;
+      } else if (value == "teal") {
+        return Colors.teal;
+      } else if (value == "lightBlue") {
+        return Colors.lightBlue;
       }
     }
     return Colors.black;
