@@ -1,8 +1,9 @@
 import 'package:analyzer/dart/ast/ast.dart';
-import 'package:dart_ast/ast/ast_node_key.dart';
-import 'package:dart_ast/ast/ast_node_type.dart';
 import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/cupertino.dart';
+
+import 'ast_node_key.dart';
+import 'ast_node_type.dart';
 
 /// [dart_ast.dart]生成的json数据解析称AstNode。
 ///

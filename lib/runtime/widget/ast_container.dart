@@ -1,4 +1,4 @@
-import 'package:dart_ast/ast/ast_node.dart';
+import 'package:dart_ast/compiler/node/ast_node.dart';
 import 'package:dart_ast/runtime/argument/arg_alignment.dart';
 import 'package:dart_ast/runtime/argument/arg_color.dart';
 import 'package:dart_ast/runtime/argument/arg_decoration.dart';

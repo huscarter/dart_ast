@@ -7,7 +7,7 @@
 
 import 'dart:convert';
 
-import 'package:dart_ast/ast/ast_node.dart';
+import 'package:dart_ast/compiler/node/ast_node.dart';
 import 'package:dart_ast/util/logger.dart';
 import 'package:dart_ast_example/ast_json.dart';
 import 'package:flutter/material.dart';

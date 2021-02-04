@@ -1,5 +1,5 @@
-import 'package:dart_ast/ast/ast_node.dart';
-import 'package:dart_ast/ast/ast_node_type.dart';
+import 'package:dart_ast/compiler/node/ast_node.dart';
+import 'package:dart_ast/compiler/node/ast_node_type.dart';
 import 'package:dart_ast/runtime/runtime_factory.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

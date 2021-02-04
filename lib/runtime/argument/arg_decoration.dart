@@ -1,5 +1,5 @@
 import 'dart:ui';
-import 'package:dart_ast/ast/ast_node.dart';
+import 'package:dart_ast/compiler/node/ast_node.dart';
 import 'package:dart_ast/runtime/argument/arg_color.dart';
 import 'package:flutter/material.dart';
 

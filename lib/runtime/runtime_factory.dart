@@ -1,5 +1,5 @@
-import 'package:dart_ast/ast/ast_node.dart';
-import 'package:dart_ast/ast/ast_node_type.dart';
+import 'package:dart_ast/compiler/node/ast_node.dart';
+import 'package:dart_ast/compiler/node/ast_node_type.dart';
 import 'package:dart_ast/runtime/widget/ast_appbar.dart';
 import 'package:dart_ast/runtime/widget/ast_center.dart';
 import 'package:dart_ast/runtime/widget/ast_column.dart';
@@ -70,7 +70,7 @@ class RuntimeFactory {
           return AstSliverFixedExtentList(node).build();
         }
       }
-      return Center(child: Text("No ast widget matched"));
+      return Center(child: Text("No compiler.ast widget matched"));
     } catch (e) {
       Logger.out(tag, "$e");
       return Center(child: Text("Ast widget build failed"));

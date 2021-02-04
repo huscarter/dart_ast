@@ -6,9 +6,9 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:args/args.dart';
-import 'package:dart_ast/ast/ast_node_key.dart';
-import 'ast/ast_node_type.dart';
-import 'util/Logger.dart';
+import '../util/Logger.dart';
+import 'node/ast_node_key.dart';
+import 'node/ast_node_type.dart';
 
 ///
 void main(List<String> arguments) {
@@ -46,7 +46,7 @@ Future generate(String path) async {
   }
 }
 
-/// ast 生成器
+/// compiler.ast 生成器
 class DartAstVisitor extends SimpleAstVisitor<Map> {
   ///
   Map _visitNode(AstNode node) {
@@ -498,7 +498,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 class OrgAstVisitor extends GeneralizingAstVisitor<Map> {
   @override
   Map visitNode(AstNode node) {
-    Logger.writeln("ast node: ${node.runtimeType}-->${node.toSource()}");
+    Logger.writeln("compiler.ast node: ${node.runtimeType}-->${node.toSource()}");
     Map map = super.visitNode(node);
     return map;
   }
