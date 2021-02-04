@@ -3,7 +3,7 @@ import 'package:dart_ast/runtime/runtime_page.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
 import 'package:dart_ast/util/logger.dart';
 import 'package:dart_ast/util/navigation.dart';
-import 'package:dart_ast_example/ast_page.dart';
+import 'package:dart_ast_example/test_page.dart';
 import 'package:flutter/material.dart';
 
 import 'ast_json.dart';
@@ -60,7 +60,7 @@ class HomePage extends StatelessPage {
               textColor: Colors.white,
               child: Text("static ast page"),
               onPressed: () {
-                Navigation.push(context, AstPage());
+                Navigation.push(context, TestPage());
               },
             ),
           ),

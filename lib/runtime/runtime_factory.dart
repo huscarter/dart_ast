@@ -17,13 +17,14 @@ import 'package:dart_ast/runtime/widget/ast_widget.dart';
 import 'package:dart_ast/util/logger.dart';
 import 'package:flutter/cupertino.dart';
 
-/// 通过[AstNode]生成整个 Widget Tree。
+/// 通过[AstNode]生成[Widget]、[Object]
 class RuntimeFactory {
   static final String tag = "RuntimeFactory";
 
   ///
   RuntimeFactory._();
 
+  /// 通过[AstNode]生成整个 Widget Tree。
   /// "expression":{"type":"MethodInvocation", "callee":{"type":"Identifier", "value":"Scaffold"}, "typeArguments":null,"argumentList":{}}
   static dynamic buildWidget(Expression node) {
     // Logger.out(tag, "calleeValue:${node.callee.toJson()}");
@@ -83,4 +84,10 @@ class RuntimeFactory {
   ///
   static String getProperty(Identifier node) =>
       node.target.value + "." + node.property.value;
+
+
+  static dynamic buildClass(Expression node) {
+
+  }
+
 }

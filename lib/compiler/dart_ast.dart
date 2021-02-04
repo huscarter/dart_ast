@@ -205,6 +205,56 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
     };
   }
 
+  @override
+  Map visitTryStatement(TryStatement node) {
+    // Logger.writeln("visitTryStatement source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.TryStatement,
+      AstNodeKey.body: _visitNode(node.body),
+      AstNodeKey.finallyBlock: _visitNode(node.finallyBlock),
+      AstNodeKey.catchClauses: _visitNodeList(node.catchClauses),
+    };
+  }
+
+  @override
+  Map visitTypeArgumentList(TypeArgumentList node) {
+    // Logger.writeln("visitTypeArgumentList source:${node.toSource()}");
+    if (node.arguments == null || node.arguments.length == 0) {
+      return null;
+    }
+    return {
+      AstNodeKey.type: AstNodeType.ArgumentList,
+      AstNodeKey.arguments: _visitNodeList(node.arguments),
+    };
+  }
+
+  @override
+  Map visitStringInterpolation(StringInterpolation node) {
+    // Logger.writeln("visitStringInterpolation source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.StringInterpolation,
+      AstNodeKey.elements: _visitNodeList(node.elements),
+    };
+  }
+
+  @override
+  Map visitInterpolationExpression(InterpolationExpression node) {
+    // Logger.writeln("visitInterpolationExpression source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.InterpolationExpression,
+      AstNodeKey.expression: _visitNode(node.expression),
+    };
+  }
+
+  @override
+  Map visitInterpolationString(InterpolationString node) {
+    // Logger.writeln("visitInterpolationString source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.InterpolationString,
+      AstNodeKey.value: node.value,
+    };
+  }
+
   /// 构造运算表达式结构
   @override
   Map visitBinaryExpression(BinaryExpression node) {
@@ -498,7 +548,8 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 class OrgAstVisitor extends GeneralizingAstVisitor<Map> {
   @override
   Map visitNode(AstNode node) {
-    Logger.writeln("compiler.ast node: ${node.runtimeType}-->${node.toSource()}");
+    Logger.writeln(
+        "compiler.ast node: ${node.runtimeType}-->${node.toSource()}");
     Map map = super.visitNode(node);
     return map;
   }

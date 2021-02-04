@@ -60,6 +60,7 @@ class AstNodeType{
   static const String SwitchStatement = "SwitchStatement";
   static const String SwitchCase = "SwitchCase";
   static const String SwitchDefault = "SwitchDefault";
+  static const String TryStatement = "TryStatement";
 
   static const String ImportDirective = "ImportDirective";
   static const String ShowCombinator = "ShowCombinator";
@@ -68,5 +69,10 @@ class AstNodeType{
   static const String ImplementsClause = "ImplementsClause";
   static const String ExpressionFunctionBody = "ExpressionFunctionBody";
   static const String DeclaredIdentifier = "DeclaredIdentifier";
+
+  ///
+  static const String StringInterpolation = "StringInterpolation";
+  static const String InterpolationString = "InterpolationString";
+  static const String InterpolationExpression = "InterpolationExpression";
 
 }

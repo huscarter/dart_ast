@@ -23,6 +23,8 @@ class AstNodeKey {
   static const String value = "value";
   static const String key = "key";
   static const String combinators = "combinators";
+  static const String arguments = "arguments";
+  static const String elements = "elements";
 
   /// import [uri]
   static const String uri = "uri";
@@ -45,4 +47,8 @@ class AstNodeKey {
   static const String implements = "implements";
   static const String hiddenNames = "hiddenNames";
   static const String shownNames = "shownNames";
+
+  ///
+  static const String finallyBlock = "finallyBlock";
+  static const String catchClauses = "catchClauses";
 }
