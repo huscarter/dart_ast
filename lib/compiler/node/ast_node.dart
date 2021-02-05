@@ -184,7 +184,7 @@ class FormalParameter extends AstNode {
   }
 }
 
-///
+/// 方法在 AstNode 中的描述
 class MethodDeclaration extends AstNode {
   Identifier name;
 
@@ -225,7 +225,7 @@ class MethodDeclaration extends AstNode {
 }
 
 ///
-class ClassBody extends AstNode {
+class ClassDeclaration extends AstNode {
   Identifier name;
   TypeName superClause;
   TypeName implementsClause;
@@ -233,7 +233,7 @@ class ClassBody extends AstNode {
   List<MethodDeclaration> body;
   List metadata;
 
-  ClassBody.fromMap(Map map) : super(map: map) {
+  ClassDeclaration.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.name = Identifier.fromMap(map[AstNodeKey.name]);
     this.superClause = TypeName.fromMap(map[AstNodeKey.superClause]);
@@ -266,7 +266,7 @@ class ImportDirective extends AstNode {
 
 ///
 class Program extends AstNode {
-  List<ClassBody> body;
+  List<ClassDeclaration> body;
   List<ImportDirective> directive;
 
   Program.fromMap(Map map) : super(map: map) {
@@ -275,7 +275,7 @@ class Program extends AstNode {
     if (map[AstNodeKey.body] != null) {
       this.body = [];
       for (Map temp in map[AstNodeKey.body]) {
-        this.body.add(ClassBody.fromMap(temp));
+        this.body.add(ClassDeclaration.fromMap(temp));
       }
     }
 

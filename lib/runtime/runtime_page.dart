@@ -45,7 +45,7 @@ class _RuntimePageState extends State<RuntimePage> {
   /// 所以构建widget时需要取出build方法里的内容交给[RuntimeFactory]处理。
   void _buildAstWidget() async {
     Program program = widget.astNode as Program;
-    for (ClassBody body in program.body) {
+    for (ClassDeclaration body in program.body) {
       if (isBuildClass(body.superClause.name)) {
         // 是布局class
         for (MethodDeclaration method in body.body) {

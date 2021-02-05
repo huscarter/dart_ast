@@ -77,15 +77,20 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   /// 构造根节点
   Map visitCompilationUnit(CompilationUnit node) {
     // Logger.writeln("visitCompilationUnit source:${node.toSource()}");
-    if (node.declarations.isNotEmpty) {
-      return {
-        AstNodeKey.type: AstNodeType.Program,
-        AstNodeKey.body: _visitNodeList(node.declarations),
-        AstNodeKey.directive: _visitNodeList(node.directives),
-      };
-    } else {
-      return null;
+    if (node.declarations.isEmpty) return null;
+    List<Map> declarations;
+    List<Map> directives;
+    if (node.declarations != null && node.declarations.length > 0) {
+      declarations = _visitNodeList(node.declarations);
     }
+    if (node.directives != null && node.directives.length > 0) {
+      directives = _visitNodeList(node.directives);
+    }
+    return {
+      AstNodeKey.type: AstNodeType.Program,
+      AstNodeKey.body: declarations,
+      AstNodeKey.directive: directives,
+    };
   }
 
   /// 构建方法调用
@@ -199,6 +204,9 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitExpressionStatement(ExpressionStatement node) {
     // Logger.writeln("visitExpressionStatement source:${node.toSource()}");
+    if(node.expression == null){
+      return null;
+    }
     return {
       AstNodeKey.type: AstNodeType.ExpressionStatement,
       AstNodeKey.expression: _visitNode(node.expression),
@@ -548,8 +556,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
 class OrgAstVisitor extends GeneralizingAstVisitor<Map> {
   @override
   Map visitNode(AstNode node) {
-    Logger.writeln(
-        "compiler.ast node: ${node.runtimeType}-->${node.toSource()}");
+    Logger.writeln("ast node: ${node.runtimeType}-->${node.toSource()}");
     Map map = super.visitNode(node);
     return map;
   }
