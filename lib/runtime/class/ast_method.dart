@@ -36,18 +36,33 @@ class AstMethod {
   }
 
   ///
-  Future _innerExecute(Expression expression, AstStack stack) async{
+  Future _innerExecute(Expression expression, AstStack stack) async {
     String type = expression.type;
     if (type == AstNodeType.BinaryExpression) {
       return await _executeBinary(expression, stack);
     } else if (type == AstNodeType.ReturnStatement) {
-
+    } else if (type == AstNodeType.ExpressionStatement) {
+      return await _executeStatement(expression, stack);
     } else if (type == AstNodeType.AssignmentExpression) {}
     return null;
   }
 
   ///
-  dynamic _executeBinary(Expression expression, AstStack stack) {
+  dynamic _executeStatement(Expression expression, AstStack stack) {
+    var rightHandSide = _executeBinary(expression.rightHandSide, stack);
+    var leftHandSide = _executeBinary(expression.leftHandSide, stack);
+    return _executeBinary(
+      BinaryExpression(
+        operator: expression.operator,
+        left: leftHandSide,
+        right: rightHandSide,
+      ),
+      stack,
+    );
+  }
+
+  ///
+  dynamic _executeBinary(BinaryExpression expression, AstStack stack) {
     var left = stack.get(expression.left.value);
     var right = stack.get(expression.right.value);
     //操作符

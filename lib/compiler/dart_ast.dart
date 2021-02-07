@@ -214,6 +214,16 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   }
 
   @override
+  Map visitAssignmentExpression(AssignmentExpression node){
+    return {
+      AstNodeKey.type: AstNodeType.ExpressionStatement,
+      AstNodeKey.rightHandSide: _visitNode(node.rightHandSide),
+      AstNodeKey.leftHandSide: _visitNode(node.leftHandSide),
+      AstNodeKey.operator: node.operator.lexeme,
+    };
+  }
+
+  @override
   Map visitTryStatement(TryStatement node) {
     // Logger.writeln("visitTryStatement source:${node.toSource()}");
     return {

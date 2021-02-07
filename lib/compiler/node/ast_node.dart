@@ -67,7 +67,7 @@ class TypeName extends AstNode {
 
 /// 此类一般用于描述"type"为"MethodInvocation"的信息
 /// 当我们通过[AstNode]生成[Widget]时，一般就是通过传入此信息来build
-class Expression extends AstNode {
+class Expression extends BinaryExpression {
   static final String tag = "Expression";
 
   Identifier callee;
@@ -87,16 +87,11 @@ class Expression extends AstNode {
   /// type of Identifier or List<Expression>
   dynamic value;
 
-  ///
-  String operator;
+  BinaryExpression rightHandSide;
 
-  ///
-  Identifier left;
+  BinaryExpression leftHandSide;
 
-  ///
-  Identifier right;
-
-  Expression.fromMap(Map map) : super(map: map) {
+  Expression.fromMap(Map map) : super.fromMap(map) {
     if (map == null) return;
     this.callee = Identifier.fromMap(map[AstNodeKey.callee]);
 
@@ -137,13 +132,11 @@ class Expression extends AstNode {
       }
     }
 
-    this.operator = map[AstNodeKey.operator];
+    this.rightHandSide =
+        BinaryExpression.fromMap(map[AstNodeKey.rightHandSide]);
 
-    this.left = Identifier.fromMap(map[AstNodeKey.left]);
-
-    this.right = Identifier.fromMap(map[AstNodeKey.right]);
-
-  }// end fromMap
+    this.leftHandSide = BinaryExpression.fromMap(map[AstNodeKey.leftHandSide]);
+  } // end fromMap
 }
 
 /// for argumentList value
@@ -175,6 +168,22 @@ class TypeArgument extends AstNode {
         this.body.add(BlockStatement.fromMap(temp));
       }
     }
+  }
+}
+
+///
+class BinaryExpression extends AstNode {
+  String operator;
+  Identifier left;
+  Identifier right;
+
+  BinaryExpression({this.operator, this.right, this.left});
+
+  BinaryExpression.fromMap(Map map) : super(map: map) {
+    if (map == null) return;
+    this.operator = map[AstNodeKey.operator];
+    this.left = Identifier.fromMap(map[AstNodeKey.left]);
+    this.right = Identifier.fromMap(map[AstNodeKey.right]);
   }
 }
 

@@ -51,4 +51,9 @@ class AstNodeKey {
   ///
   static const String finallyBlock = "finallyBlock";
   static const String catchClauses = "catchClauses";
+
+  ///
+  static const String leftHandSide = "leftHandSide";
+  static const String rightHandSide = "rightHandSide";
+
 }
