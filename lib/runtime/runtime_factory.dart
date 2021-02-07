@@ -1,5 +1,6 @@
 import 'package:dart_ast/compiler/node/ast_node.dart';
 import 'package:dart_ast/compiler/node/ast_node_type.dart';
+import 'package:dart_ast/runtime/runtime_dart.dart';
 import 'package:dart_ast/runtime/widget/ast_appbar.dart';
 import 'package:dart_ast/runtime/widget/ast_center.dart';
 import 'package:dart_ast/runtime/widget/ast_column.dart';
@@ -85,9 +86,9 @@ class RuntimeFactory {
   static String getProperty(Identifier node) =>
       node.target.value + "." + node.property.value;
 
-
-  static dynamic buildClass(Expression node) {
-
+  ///
+  static RuntimeDart buildDart(Program node) {
+    return RuntimeDart(node);
   }
 
 }

@@ -87,6 +87,15 @@ class Expression extends AstNode {
   /// type of Identifier or List<Expression>
   dynamic value;
 
+  ///
+  String operator;
+
+  ///
+  Identifier left;
+
+  ///
+  Identifier right;
+
   Expression.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.callee = Identifier.fromMap(map[AstNodeKey.callee]);
@@ -127,7 +136,14 @@ class Expression extends AstNode {
         this.value = tempList;
       }
     }
-  }
+
+    this.operator = map[AstNodeKey.operator];
+
+    this.left = Identifier.fromMap(map[AstNodeKey.left]);
+
+    this.right = Identifier.fromMap(map[AstNodeKey.right]);
+
+  }// end fromMap
 }
 
 /// for argumentList value
@@ -184,7 +200,7 @@ class FormalParameter extends AstNode {
   }
 }
 
-/// 方法在 AstNode 中的描述
+/// class方法在 AstNode 中的描述
 class MethodDeclaration extends AstNode {
   Identifier name;
 
@@ -221,6 +237,24 @@ class MethodDeclaration extends AstNode {
 
     this.isAsync = map[AstNodeKey.isAsync];
     this.returnType = TypeName.fromMap(map[AstNodeKey.returnType]);
+  }
+}
+
+/// 全局方法 AstNode
+class FunctionDeclaration extends AstNode {
+  Identifier name;
+
+  MethodDeclaration expression;
+  bool isAsync;
+
+  FunctionDeclaration.fromMap(Map map) : super(map: map) {
+    if (map == null) return;
+
+    this.name = Identifier.fromMap(map[AstNodeKey.name]);
+
+    this.expression = MethodDeclaration.fromMap(map[AstNodeKey.expression]);
+
+    this.isAsync = map[AstNodeKey.isAsync];
   }
 }
 
@@ -266,16 +300,22 @@ class ImportDirective extends AstNode {
 
 ///
 class Program extends AstNode {
-  List<ClassDeclaration> body;
+  List<ClassDeclaration> classBody;
+  List<FunctionDeclaration> functionBody;
   List<ImportDirective> directive;
 
   Program.fromMap(Map map) : super(map: map) {
     if (map == null) return;
 
     if (map[AstNodeKey.body] != null) {
-      this.body = [];
+      this.classBody = [];
+      this.functionBody = [];
       for (Map temp in map[AstNodeKey.body]) {
-        this.body.add(ClassDeclaration.fromMap(temp));
+        if (temp[AstNodeKey.type] == AstNodeType.FunctionDeclaration) {
+          this.functionBody.add(FunctionDeclaration.fromMap(temp));
+        } else {
+          this.classBody.add(ClassDeclaration.fromMap(temp));
+        }
       }
     }
 

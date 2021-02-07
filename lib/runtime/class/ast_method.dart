@@ -1,41 +1,91 @@
 import 'package:dart_ast/compiler/node/ast_node.dart';
 import 'package:dart_ast/compiler/node/ast_node_type.dart';
 import 'package:dart_ast/runtime/class/ast_stack.dart';
+import 'package:dart_ast/util/logger.dart';
 
-/// 运行时 method
+/// 运行时 class#method
+/// 全局函数的执行体被包装在属性中[FunctionDeclaration.expression]
 class AstMethod {
+  static const String tag = "AstMethod";
+
   final MethodDeclaration node;
 
   ///
   AstMethod(this.node);
 
+  /// 真正的执行方法
   ///
-  Future invoke(List params, AstStack stack) {
+  Future executeExpression(AstStack stack, List params) {
     if (stack == null) stack = AstStack();
     stack.push();
-    // 将传入的 param 参数值按照方法定义，保存到 stack 中
-    for(var param in params){
-      //
+    // Logger.out(tag, "node:${node.toJson()}");
+    // 将传参和形参对应
+    for (int i = 0; i < node.parameters.length; i++) {
+      if (node.type == AstNodeType.MethodDeclaration) {
+        stack.addMethod(node.parameters[i].name, params[i]);
+      } else {
+        stack.addVariable(node.parameters[i].name, params[i]);
+      }
     }
-    var result = _execute(stack);
+    var result;
+    for (BlockStatement statement in node.body) {
+      result = _innerExecute(statement.expression, stack);
+    }
     stack.pop();
     return result;
   }
 
-  /// 真正的执行方法
-  /// @param stack
-  Future _execute(AstStack stack) {
-    for (BlockStatement statement in node.body) {
-      switch (statement.expression.type) {
-        case AstNodeType.ReturnStatement:
-          if(statement.expression.type == AstNodeType.BinaryExpression){
-            return Future.value(3);
-          }
-          break;
-        default:
-          break;
-      }
+  ///
+  Future _innerExecute(Expression expression, AstStack stack) async{
+    String type = expression.type;
+    if (type == AstNodeType.BinaryExpression) {
+      return await _executeBinary(expression, stack);
+    } else if (type == AstNodeType.ReturnStatement) {
+
+    } else if (type == AstNodeType.AssignmentExpression) {}
+    return null;
+  }
+
+  ///
+  dynamic _executeBinary(Expression expression, AstStack stack) {
+    var left = stack.get(expression.left.value);
+    var right = stack.get(expression.right.value);
+    //操作符
+    switch (expression.operator) {
+      case '+':
+        return left + right;
+      case '-':
+        return left - right;
+      case '*':
+        return left * right;
+      case '/':
+        return left / right;
+      case '<':
+        return left < right;
+      case '>':
+        return left > right;
+      case '<=':
+        return left <= right;
+      case '>=':
+        return left >= right;
+      case '==':
+        return left == right;
+      case '&&':
+        return left && right;
+      case '||':
+        return left || right;
+      case '%':
+        return left % right;
+      case '<<':
+        return left << right;
+      case '|':
+        return left | right;
+      case '&':
+        return left & right;
+      case '>>':
+        return left >> right;
+      default:
+        return null;
     }
-    return Future.value();
   }
 }

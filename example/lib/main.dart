@@ -1,4 +1,6 @@
 import 'package:dart_ast/compiler/node/ast_node.dart';
+import 'package:dart_ast/runtime/runtime_dart.dart';
+import 'package:dart_ast/runtime/runtime_factory.dart';
 import 'package:dart_ast/runtime/runtime_page.dart';
 import 'package:dart_ast/runtime/widget/ast_widget.dart';
 import 'package:dart_ast/util/logger.dart';
@@ -44,6 +46,16 @@ class HomePage extends StatelessPage {
   Widget build(BuildContext context) {
     // Logger.out(tag, new TestStatic().tag);
 
+    // 测试runtime dart
+    RuntimeDart runtimeDart =
+        RuntimeFactory.buildDart(parseAstNodeSync(AstJson.ast_class));
+    Future result = runtimeDart.execute("add", [1, 10]);
+    if (result == null) {
+      Logger.out(tag, "runtime dart result:null");
+    } else {
+      result.then((value) => Logger.out(tag, "runtime dart result:$value"));
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plugin example app'),
@@ -86,7 +98,7 @@ class HomePage extends StatelessPage {
   }
 }
 
-class TestStatic extends AstWidget{
+class TestStatic extends AstWidget {
   static String name = "TestStatic";
 
   TestStatic(Expression node) : super(node);
@@ -95,6 +107,4 @@ class TestStatic extends AstWidget{
   Widget build() {
     return Text("");
   }
-
 }
-
