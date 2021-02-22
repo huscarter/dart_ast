@@ -1,5 +1,5 @@
-///
-class AstNodeType{
+/// 此类的静态属性名称，对应[AstNode]的具体类名
+class AstNodeType {
   AstNodeType._();
 
   ///
@@ -15,6 +15,7 @@ class AstNodeType{
   static const String FieldDeclaration = "FieldDeclaration";
   static const String VariableDeclarator = "VariableDeclarator";
   static const String VariableDeclarationList = "VariableDeclarationList";
+  static const String VariableDeclarationStatement = "VariableDeclarationStatement";
 
   ///
   static const String MethodInvocation = "MethodInvocation";
@@ -55,11 +56,18 @@ class AstNodeType{
   static const String ExpressionStatement = "ExpressionStatement";
 
   ///
-  static const String IfStatement = "IfStatement";
   static const String ForStatement = "ForStatement";
+  static const String ForPartsWithDeclarations = "ForPartsWithDeclarations";
+  static const String ForPartsWithExpression = "ForPartsWithExpression";
+  static const String PostfixExpression = "PostfixExpression";
+
+  static const String IfStatement = "IfStatement";
+
   static const String SwitchStatement = "SwitchStatement";
+  static const String BreakStatement = "BreakStatement";
   static const String SwitchCase = "SwitchCase";
   static const String SwitchDefault = "SwitchDefault";
+
   static const String TryStatement = "TryStatement";
 
   static const String ImportDirective = "ImportDirective";
@@ -74,5 +82,4 @@ class AstNodeType{
   static const String StringInterpolation = "StringInterpolation";
   static const String InterpolationString = "InterpolationString";
   static const String InterpolationExpression = "InterpolationExpression";
-
 }

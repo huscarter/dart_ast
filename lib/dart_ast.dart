@@ -6,9 +6,9 @@ import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:args/args.dart';
-import '../util/Logger.dart';
-import 'node/ast_node_key.dart';
-import 'node/ast_node_type.dart';
+import 'util/Logger.dart';
+import 'compiler/node/ast_node_key.dart';
+import 'compiler/node/ast_node_type.dart';
 
 ///
 void main(List<String> arguments) {
@@ -154,6 +154,10 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitVariableDeclarationStatement(VariableDeclarationStatement node) {
     // Logger.writeln("visitVariableDeclarationStatement source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.VariableDeclarationStatement,
+      AstNodeKey.variables: _visitNode(node.variables),
+    };
     return _visitNode(node.variables);
   }
 
@@ -204,7 +208,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   @override
   Map visitExpressionStatement(ExpressionStatement node) {
     // Logger.writeln("visitExpressionStatement source:${node.toSource()}");
-    if(node.expression == null){
+    if (node.expression == null) {
       return null;
     }
     return {
@@ -214,7 +218,7 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
   }
 
   @override
-  Map visitAssignmentExpression(AssignmentExpression node){
+  Map visitAssignmentExpression(AssignmentExpression node) {
     return {
       AstNodeKey.type: AstNodeType.ExpressionStatement,
       AstNodeKey.rightHandSide: _visitNode(node.rightHandSide),
@@ -560,6 +564,93 @@ class DartAstVisitor extends SimpleAstVisitor<Map> {
       AstNodeKey.combinators: combinators
     };
   }
+
+  @override
+  Map visitIfStatement(IfStatement node) {
+    // Logger.writeln("visitIfStatement source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.IfStatement,
+      AstNodeKey.condition: _visitNode(node.condition),
+      AstNodeKey.thenStatement: _visitNode(node.thenStatement),
+      AstNodeKey.elseStatement: _visitNode(node.elseStatement),
+    };
+  }
+
+  @override
+  Map visitSwitchCase(SwitchCase node) {
+    // Logger.writeln("visitSwitchCase source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.SwitchCase,
+      AstNodeKey.expression: _visitNode(node.expression),
+    };
+  }
+
+  @override
+  Map visitSwitchDefault(SwitchDefault node) {
+    // Logger.writeln("visitSwitchDefault source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.SwitchDefault,
+      AstNodeKey.labels: _visitNodeList(node.labels),
+      AstNodeKey.statements: _visitNodeList(node.statements),
+    };
+  }
+
+  @override
+  Map visitSwitchStatement(SwitchStatement node) {
+    // Logger.writeln("visitSwitchStatement source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.SwitchStatement,
+      AstNodeKey.expression: _visitNode(node.expression),
+      AstNodeKey.members: _visitNodeList(node.members),
+    };
+  }
+
+  @override
+  Map visitBreakStatement(BreakStatement node) {
+    // Logger.writeln("visitBreakStatement source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.BreakStatement,
+      AstNodeKey.label: "break",
+    };
+  }
+
+  @override
+  Map visitForStatement(ForStatement node) {
+    // Logger.writeln("visitForStatement source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.ForStatement,
+      AstNodeKey.body: _visitNode(node.body),
+      AstNodeKey.forLoopParts: _visitNode(node.forLoopParts),
+    };
+  }
+
+  @override
+  Map visitForPartsWithDeclarations(ForPartsWithDeclarations node) {
+    // Logger.writeln("visitForPartsWithDeclarations source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.ForPartsWithDeclarations,
+      AstNodeKey.variables: _visitNode(node.variables),
+    };
+  }
+
+  @override
+  Map visitForPartsWithExpression(ForPartsWithExpression node) {
+    // Logger.writeln("visitForPartsWithExpression source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.ForPartsWithExpression,
+      AstNodeKey.initialization: _visitNode(node.initialization),
+    };
+  }
+
+  @override
+  Map visitPostfixExpression(PostfixExpression node) {
+    // Logger.writeln("visitPostfixExpression source:${node.toSource()}");
+    return {
+      AstNodeKey.type: AstNodeType.PostfixExpression,
+      AstNodeKey.operand: _visitNode(node.operand),
+    };
+  }
+  
 } // end DartAstVisitor
 
 /// 用于未封装前的[AstNode]数据展示，通过输出[AstNode.runtimeType]可以判断需要封住的内容

@@ -56,4 +56,21 @@ class AstNodeKey {
   static const String leftHandSide = "leftHandSide";
   static const String rightHandSide = "rightHandSide";
 
+  ///
+  static const String condition = "condition";
+  static const String thenElement = "thenElement";
+  static const String elseElement = "elseElement";
+  static const String thenStatement = "thenStatement";
+  static const String elseStatement = "elseStatement";
+
+  ///
+  static const String labels = "labels";
+  static const String members = "members";
+  static const String label = "label";
+
+  static const String forLoopParts = "forLoopParts";
+  static const String variables = "variables";
+  static const String initialization = "initialization";
+  static const String operand = "operand";
+
 }

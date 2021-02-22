@@ -33,42 +33,42 @@ class RuntimeFactory {
     try {
       if (node.callee.type == AstNodeType.MemberExpression) {
         String property = getProperty(node.callee);
-        if (property == getName(AstText.tagProperty)) {
+        if (property == getOrgName(AstText.tagProperty)) {
           return AstText(node).build();
         }
       } else {
         String calleeValue = node.callee.value;
-        if (calleeValue == getName(AstAppBar.tag)) {
+        if (calleeValue == getOrgName(AstAppBar.tag)) {
           return AstAppBar(node).build();
-        } else if (calleeValue == getName(AstCenter.tag)) {
+        } else if (calleeValue == getOrgName(AstCenter.tag)) {
           return AstCenter(node).build();
-        } else if (calleeValue == getName(AstScaffold.tag)) {
+        } else if (calleeValue == getOrgName(AstScaffold.tag)) {
           return AstScaffold(node).build();
-        } else if (calleeValue == getName(AstText.tag)) {
+        } else if (calleeValue == getOrgName(AstText.tag)) {
           return AstText(node).build();
-        } else if (calleeValue == getName(AstContainer.tag)) {
+        } else if (calleeValue == getOrgName(AstContainer.tag)) {
           return AstContainer(node).build();
-        } else if (calleeValue == getName(AstColumn.tag)) {
+        } else if (calleeValue == getOrgName(AstColumn.tag)) {
           return AstColumn(node).build();
-        } else if (calleeValue == getName(AstRow.tag)) {
+        } else if (calleeValue == getOrgName(AstRow.tag)) {
           return AstRow(node).build();
-        } else if (calleeValue == getName(AstTextSpan.tag)) {
+        } else if (calleeValue == getOrgName(AstTextSpan.tag)) {
           return AstTextSpan(node).build();
-        } else if (calleeValue == getName(AstExpanded.tag)) {
+        } else if (calleeValue == getOrgName(AstExpanded.tag)) {
           return AstExpanded(node).build();
-        } else if (calleeValue == getName(AstFlexibleSpaceBar.tag)) {
+        } else if (calleeValue == getOrgName(AstFlexibleSpaceBar.tag)) {
           return AstFlexibleSpaceBar(node).build();
-        } else if (calleeValue == getName(AstSliverAppBar.tag)) {
+        } else if (calleeValue == getOrgName(AstSliverAppBar.tag)) {
           return AstSliverAppBar(node).build();
-        } else if (calleeValue == getName(AstCustomScrollView.tag)) {
+        } else if (calleeValue == getOrgName(AstCustomScrollView.tag)) {
           return AstCustomScrollView(node).build();
-        } else if (calleeValue == getName(AstSliverGrid.tag)) {
+        } else if (calleeValue == getOrgName(AstSliverGrid.tag)) {
           return AstSliverGrid(node).build();
-        } else if (calleeValue == getName(AstSliverGridDelegateWithMaxCrossAxisExtent.tag)) {
+        } else if (calleeValue == getOrgName(AstSliverGridDelegateWithMaxCrossAxisExtent.tag)) {
           return AstSliverGridDelegateWithMaxCrossAxisExtent(node).build();
-        } else if (calleeValue == getName(AstSliverChildBuilderDelegate.tag)) {
+        } else if (calleeValue == getOrgName(AstSliverChildBuilderDelegate.tag)) {
           return AstSliverChildBuilderDelegate(node).build();
-        } else if (calleeValue == getName(AstSliverFixedExtentList.tag)) {
+        } else if (calleeValue == getOrgName(AstSliverFixedExtentList.tag)) {
           return AstSliverFixedExtentList(node).build();
         }
       }
@@ -80,7 +80,7 @@ class RuntimeFactory {
   }
 
   /// 获取[AstWidget]代表的原生组件名称
-  static String getName(String tag) => tag.substring(3, tag.length);
+  static String getOrgName(String tag) => tag.substring(3, tag.length);
 
   ///
   static String getProperty(Identifier node) =>

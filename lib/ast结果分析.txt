@@ -1,7 +1,7 @@
 // 执行语句
-dart lib/compiler/dart_ast.dart -f lib/test.dart
-dart lib/compiler/dart_ast.dart -f example/lib/test_page.dart
-dart lib/compiler/dart_ast.dart -f example/lib/test_class.dart
+dart lib/dart_ast.dart -f lib/test.dart
+dart lib/dart_ast.dart -f example/lib/test_page.dart
+dart lib/dart_ast.dart -f example/lib/test_class.dart
 
 // 日志输出顺序
 File path: lib/test.dart

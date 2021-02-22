@@ -84,7 +84,7 @@ class Expression extends BinaryExpression {
   /// "prefix":{"type":"Identifier", "value":"Colors"}
   Identifier prefix;
 
-  /// type of Identifier or List<Expression>
+  /// type of Identifier or List<Expression> or Map and so on.
   dynamic value;
 
   BinaryExpression rightHandSide;
@@ -187,14 +187,84 @@ class BinaryExpression extends AstNode {
   }
 }
 
+/// For variable declarator
+class Declaration extends AstNode {
+  Identifier name;
+  Identifier init;
+
+  Declaration.fromMap(Map map) : super(map: map) {
+    if (map == null) return;
+    this.name = Identifier.fromMap(map[AstNodeKey.name]);
+    this.init = Identifier.fromMap(map[AstNodeKey.init]);
+  }
+}
+
 /// contains ExpressionStatement and ReturnStatement
 class BlockStatement extends AstNode {
   Expression expression;
+  String typeAnnotation;
+  List<Declaration> declarations;
+
+  /// Identifier , BinaryExpression
+  dynamic condition;
+
+  /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
+  List<BlockStatement> thenStatement;
+
+  /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
+  List<BlockStatement> elseStatement;
+
+  // List<BlockStatement> labels;
+
+  List<BlockStatement> members;
+
 
   BlockStatement.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.expression = Expression.fromMap(map[AstNodeKey.expression]);
-  }
+    this.typeAnnotation = map[AstNodeKey.typeAnnotation];
+
+    if (map[AstNodeKey.declarations] != null) {
+      declarations = [];
+      for (Map temp in map[AstNodeKey.declarations]) {
+        declarations.add(Declaration.fromMap(temp));
+      }
+    }
+
+    String conditionType = map[AstNodeKey.condition][AstNodeKey.type];
+    if (conditionType == AstNodeType.Identifier) {
+      condition = Identifier.fromMap(map[AstNodeKey.condition]);
+    } else {
+      condition = BinaryExpression.fromMap(map[AstNodeKey.condition]);
+    }
+
+    // for if statement
+    if (map[AstNodeKey.thenStatement] != null &&
+        map[AstNodeKey.thenStatement][AstNodeKey.statements] != null) {
+      this.thenStatement = [];
+      for (Map temp in map[AstNodeKey.thenStatement][AstNodeKey.statements]) {
+        this.thenStatement.add(BlockStatement.fromMap(temp));
+      }
+    }
+
+    // for if statement
+    if (map[AstNodeKey.elseStatement] != null &&
+        map[AstNodeKey.elseStatement][AstNodeKey.statements] != null) {
+      this.elseStatement = [];
+      for (Map temp in map[AstNodeKey.elseStatement][AstNodeKey.statements]) {
+        this.elseStatement.add(BlockStatement.fromMap(temp));
+      }
+    }
+
+    // for switch statement
+    if (map[AstNodeKey.members] != null) {
+      this.members = [];
+      for (Map temp in map[AstNodeKey.members]) {
+        this.members.add(BlockStatement.fromMap(temp));
+      }
+    }
+
+  }// end fromMap
 }
 
 ///

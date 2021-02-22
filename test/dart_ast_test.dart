@@ -2,7 +2,7 @@ import 'package:dart_ast/test/plugin_test.dart';
 import 'package:dart_ast/test/plugin_test.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:dart_ast/compiler/dart_ast.dart';
+import 'package:dart_ast/dart_ast.dart';
 
 void main() {
   const MethodChannel channel = MethodChannel('dart_ast');

@@ -46,7 +46,7 @@ class HomePage extends StatelessPage {
   Widget build(BuildContext context) {
     // Logger.out(tag, new TestStatic().tag);
 
-    // 测试runtime dart
+    // test runtime dart
     RuntimeDart runtimeDart =
         RuntimeFactory.buildDart(parseAstNodeSync(AstJson.ast_class));
     Future result = runtimeDart.execute("add", [1, 10]);
@@ -56,6 +56,7 @@ class HomePage extends StatelessPage {
       result.then((value) => Logger.out(tag, "runtime dart result:$value"));
     }
 
+    // test runtime page
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plugin example app'),
