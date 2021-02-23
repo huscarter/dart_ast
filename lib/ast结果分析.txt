@@ -45,90 +45,48 @@ visitBinaryExpression source:a + 1
 visitSimpleIdentifier source:a
 visitIntegerLiteral source:1
 
-//
-compiler.ast node: ImportDirectiveImpl-->import 'package:dart_ast/util/logger.dart';
-compiler.ast node: SimpleStringLiteralImpl-->'package:dart_ast/util/logger.dart'
-compiler.ast node: ImportDirectiveImpl-->import 'package:flutter/cupertino.dart';
-compiler.ast node: SimpleStringLiteralImpl-->'package:flutter/cupertino.dart'
-compiler.ast node: ImportDirectiveImpl-->import 'package:flutter/material.dart';
-compiler.ast node: SimpleStringLiteralImpl-->'package:flutter/material.dart'
-compiler.ast node: ClassDeclarationImpl-->class AstPage extends StatefulWidget {@override State<StatefulWidget> createState() => _AstPageState();}
-compiler.ast node: CommentImpl-->
-compiler.ast node: DeclaredSimpleIdentifier-->AstPage
-compiler.ast node: ExtendsClauseImpl-->extends StatefulWidget
-compiler.ast node: TypeNameImpl-->StatefulWidget
-compiler.ast node: SimpleIdentifierImpl-->StatefulWidget
-compiler.ast node: MethodDeclarationImpl-->@override State<StatefulWidget> createState() => _AstPageState();
-compiler.ast node: AnnotationImpl-->@override
-compiler.ast node: SimpleIdentifierImpl-->override
-compiler.ast node: TypeNameImpl-->State<StatefulWidget>
-compiler.ast node: SimpleIdentifierImpl-->State
-compiler.ast node: TypeArgumentListImpl--><StatefulWidget>
-compiler.ast node: TypeNameImpl-->StatefulWidget
-compiler.ast node: SimpleIdentifierImpl-->StatefulWidget
-compiler.ast node: DeclaredSimpleIdentifier-->createState
-compiler.ast node: FormalParameterListImpl-->()
-compiler.ast node: ExpressionFunctionBodyImpl-->=> _AstPageState();
-compiler.ast node: MethodInvocationImpl-->_AstPageState()
-compiler.ast node: SimpleIdentifierImpl-->_AstPageState
-compiler.ast node: ArgumentListImpl-->()
-compiler.ast node: ClassDeclarationImpl-->class _AstPageState extends State<AstPage> {@override Widget build(BuildContext context) {return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}}
-compiler.ast node: CommentImpl-->
-compiler.ast node: DeclaredSimpleIdentifier-->_AstPageState
-compiler.ast node: ExtendsClauseImpl-->extends State<AstPage>
-compiler.ast node: TypeNameImpl-->State<AstPage>
-compiler.ast node: SimpleIdentifierImpl-->State
-compiler.ast node: TypeArgumentListImpl--><AstPage>
-compiler.ast node: TypeNameImpl-->AstPage
-compiler.ast node: SimpleIdentifierImpl-->AstPage
-compiler.ast node: MethodDeclarationImpl-->@override Widget build(BuildContext context) {return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}
-compiler.ast node: AnnotationImpl-->@override
-compiler.ast node: SimpleIdentifierImpl-->override
-compiler.ast node: TypeNameImpl-->Widget
-compiler.ast node: SimpleIdentifierImpl-->Widget
-compiler.ast node: DeclaredSimpleIdentifier-->build
-compiler.ast node: FormalParameterListImpl-->(BuildContext context)
-compiler.ast node: SimpleFormalParameterImpl-->BuildContext context
-compiler.ast node: TypeNameImpl-->BuildContext
-compiler.ast node: SimpleIdentifierImpl-->BuildContext
-compiler.ast node: DeclaredSimpleIdentifier-->context
-compiler.ast node: BlockFunctionBodyImpl-->{return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}
-compiler.ast node: BlockImpl-->{return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));}
-compiler.ast node: ReturnStatementImpl-->return Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]));
-compiler.ast node: MethodInvocationImpl-->Scaffold(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]))
-compiler.ast node: SimpleIdentifierImpl-->Scaffold
-compiler.ast node: ArgumentListImpl-->(appBar: AppBar(title: Text("AstPage")), body: Column(children: <Widget>[Text("1"), Text("2")]))
-compiler.ast node: NamedExpressionImpl-->appBar: AppBar(title: Text("AstPage"))
-compiler.ast node: LabelImpl-->appBar:
-compiler.ast node: SimpleIdentifierImpl-->appBar
-compiler.ast node: MethodInvocationImpl-->AppBar(title: Text("AstPage"))
-compiler.ast node: SimpleIdentifierImpl-->AppBar
-compiler.ast node: ArgumentListImpl-->(title: Text("AstPage"))
-compiler.ast node: NamedExpressionImpl-->title: Text("AstPage")
-compiler.ast node: LabelImpl-->title:
-compiler.ast node: SimpleIdentifierImpl-->title
-compiler.ast node: MethodInvocationImpl-->Text("AstPage")
-compiler.ast node: SimpleIdentifierImpl-->Text
-compiler.ast node: ArgumentListImpl-->("AstPage")
-compiler.ast node: SimpleStringLiteralImpl-->"AstPage"
-compiler.ast node: NamedExpressionImpl-->body: Column(children: <Widget>[Text("1"), Text("2")])
-compiler.ast node: LabelImpl-->body:
-compiler.ast node: SimpleIdentifierImpl-->body
-compiler.ast node: MethodInvocationImpl-->Column(children: <Widget>[Text("1"), Text("2")])
-compiler.ast node: SimpleIdentifierImpl-->Column
-compiler.ast node: ArgumentListImpl-->(children: <Widget>[Text("1"), Text("2")])
-compiler.ast node: NamedExpressionImpl-->children: <Widget>[Text("1"), Text("2")]
-compiler.ast node: LabelImpl-->children:
-compiler.ast node: SimpleIdentifierImpl-->children
-compiler.ast node: ListLiteralImpl--><Widget>[Text("1"), Text("2")]
-compiler.ast node: TypeArgumentListImpl--><Widget>
-compiler.ast node: TypeNameImpl-->Widget
-compiler.ast node: SimpleIdentifierImpl-->Widget
-compiler.ast node: MethodInvocationImpl-->Text("1")
-compiler.ast node: SimpleIdentifierImpl-->Text
-compiler.ast node: ArgumentListImpl-->("1")
-compiler.ast node: SimpleStringLiteralImpl-->"1"
-compiler.ast node: MethodInvocationImpl-->Text("2")
-compiler.ast node: SimpleIdentifierImpl-->Text
-compiler.ast node: ArgumentListImpl-->("2")
-compiler.ast node: SimpleStringLiteralImpl-->"2"
+
+// for statement
+st node: CommentImpl-->
+ast node: DeclaredSimpleIdentifier-->TestClass
+ast node: MethodDeclarationImpl-->int increase(int a) {int result = 0; for (int i = 0; i < 10; i++) {result = i + result;} return result;}
+ast node: CommentImpl-->
+ast node: TypeNameImpl-->int
+ast node: SimpleIdentifierImpl-->int
+ast node: DeclaredSimpleIdentifier-->increase
+ast node: FormalParameterListImpl-->(int a)
+ast node: SimpleFormalParameterImpl-->int a
+ast node: TypeNameImpl-->int
+ast node: SimpleIdentifierImpl-->int
+ast node: DeclaredSimpleIdentifier-->a
+ast node: BlockFunctionBodyImpl-->{int result = 0; for (int i = 0; i < 10; i++) {result = i + result;} return result;}
+ast node: BlockImpl-->{int result = 0; for (int i = 0; i < 10; i++) {result = i + result;} return result;}
+ast node: VariableDeclarationStatementImpl-->int result = 0;
+ast node: VariableDeclarationListImpl-->int result = 0
+ast node: TypeNameImpl-->int
+ast node: SimpleIdentifierImpl-->int
+ast node: VariableDeclarationImpl-->result = 0
+ast node: DeclaredSimpleIdentifier-->result
+ast node: IntegerLiteralImpl-->0
+ast node: ForStatementImpl-->for (int i = 0; i < 10; i++) {result = i + result;}
+ast node: ForPartsWithDeclarationsImpl-->int i = 0; i < 10; i++
+ast node: VariableDeclarationListImpl-->int i = 0
+ast node: TypeNameImpl-->int
+ast node: SimpleIdentifierImpl-->int
+ast node: VariableDeclarationImpl-->i = 0
+ast node: DeclaredSimpleIdentifier-->i
+ast node: IntegerLiteralImpl-->0
+ast node: BinaryExpressionImpl-->i < 10
+ast node: SimpleIdentifierImpl-->i
+ast node: IntegerLiteralImpl-->10
+ast node: PostfixExpressionImpl-->i++
+ast node: SimpleIdentifierImpl-->i
+ast node: BlockImpl-->{result = i + result;}
+ast node: ExpressionStatementImpl-->result = i + result;
+ast node: AssignmentExpressionImpl-->result = i + result
+ast node: SimpleIdentifierImpl-->result
+ast node: BinaryExpressionImpl-->i + result
+ast node: SimpleIdentifierImpl-->i
+ast node: SimpleIdentifierImpl-->result
+ast node: ReturnStatementImpl-->return result;
+ast node: SimpleIdentifierImpl-->result

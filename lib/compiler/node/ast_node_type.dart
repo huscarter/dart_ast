@@ -57,9 +57,13 @@ class AstNodeType {
 
   ///
   static const String ForStatement = "ForStatement";
+  static const String ForParts = "ForParts";
   static const String ForPartsWithDeclarations = "ForPartsWithDeclarations";
+  static const String ForEachPartsWithDeclaration = "ForEachPartsWithDeclaration";
   static const String ForPartsWithExpression = "ForPartsWithExpression";
   static const String PostfixExpression = "PostfixExpression";
+  static const String ForElement = "ForElement";
+  static const String ForEachPartsWithIdentifier = "ForEachPartsWithIdentifier";
 
   static const String IfStatement = "IfStatement";
 

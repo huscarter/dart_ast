@@ -19,7 +19,7 @@ class AstSliverAppBar extends AstWidget {
     bool pinned;
     double expandedHeight;
     Widget flexibleSpace;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "pinned":
           pinned = arg.expression.value;

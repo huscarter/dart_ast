@@ -9,7 +9,7 @@ class ArgText {
     Color color;
     switch (node.callee.value) {
       case "TextStyle":
-        for (TypeArgument arg in node.argumentList) {
+        for (NamedExpression arg in node.argumentList) {
           switch (arg.name.value) {
             case "color":
               color = ArgColor.buildColor(arg.expression);

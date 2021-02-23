@@ -61,7 +61,7 @@ class AstCustomScrollView extends AstWidget {
     if (node.argumentList == null) return CustomScrollView();
     List<Widget> slivers = [];
 
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "slivers":
           for (Expression childNode in arg.expression.value) {

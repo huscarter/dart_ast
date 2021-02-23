@@ -17,7 +17,7 @@ class AstFlexibleSpaceBar extends AstWidget {
   Widget build() {
     if (node.argumentList == null) return FlexibleSpaceBar();
     Widget title;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "title":
           title = RuntimeFactory.buildWidget(arg.expression);

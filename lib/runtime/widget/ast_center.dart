@@ -13,7 +13,7 @@ class AstCenter extends AstWidget {
   Widget build() {
     if (node.argumentList == null) return Center();
     Widget child;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "child":
           child = RuntimeFactory.buildWidget(arg.expression);

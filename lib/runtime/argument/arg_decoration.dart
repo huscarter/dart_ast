@@ -9,7 +9,7 @@ class ArgDecoration {
   static Decoration buildDecoration(Expression node) {
     Border border;
     Color color;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "border":
           border = buildBorder(arg.expression);
@@ -29,7 +29,7 @@ class ArgDecoration {
   static Border buildBorder(Expression node) {
     double width;
     Color color;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "width":
           width = arg.expression.value;

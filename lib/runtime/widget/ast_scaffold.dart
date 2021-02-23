@@ -16,7 +16,7 @@ class AstScaffold extends AstWidget {
     if (node.argumentList == null) return Scaffold();
     Widget appBar;
     Widget body;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "appBar":
           appBar = RuntimeFactory.buildWidget(arg.expression);

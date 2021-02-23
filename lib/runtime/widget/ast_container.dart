@@ -21,7 +21,7 @@ class AstContainer extends AstWidget {
     Color color;
     Alignment alignment;
     Decoration decoration;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "child":
           child = RuntimeFactory.buildWidget(arg.expression);

@@ -65,13 +65,42 @@ class TypeName extends AstNode {
   }
 }
 
+///
+class BinaryExpression extends AstNode {
+  String operator;
+  Identifier left;
+  Identifier right;
+  Identifier operand;
+
+  BinaryExpression({this.operator, this.right, this.left});
+
+  BinaryExpression.fromMap(Map map) : super(map: map) {
+    if (map == null) return;
+    this.operator = map[AstNodeKey.operator];
+    this.left = Identifier.fromMap(map[AstNodeKey.left]);
+    this.right = Identifier.fromMap(map[AstNodeKey.right]);
+    this.operand = Identifier.fromMap(map[AstNodeKey.operand]);
+  }
+}
+
+/// For variable declarator
+class Declaration extends AstNode {
+  Identifier name;
+  Identifier init;
+
+  Declaration.fromMap(Map map) : super(map: map) {
+    if (map == null) return;
+    this.name = Identifier.fromMap(map[AstNodeKey.name]);
+    this.init = Identifier.fromMap(map[AstNodeKey.init]);
+  }
+}
+
 /// 此类一般用于描述"type"为"MethodInvocation"的信息
 /// 当我们通过[AstNode]生成[Widget]时，一般就是通过传入此信息来build
 class Expression extends BinaryExpression {
   static final String tag = "Expression";
 
   Identifier callee;
-  List<TypeArgument> typeArguments;
 
   /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
   /// 参数列表类型有可能的情况：TypeArgument,Expression,Identifier(TypeArgument contain Identifier)
@@ -94,9 +123,7 @@ class Expression extends BinaryExpression {
   Expression.fromMap(Map map) : super.fromMap(map) {
     if (map == null) return;
     this.callee = Identifier.fromMap(map[AstNodeKey.callee]);
-
-    // todo typeArguments
-
+    
     if (map[AstNodeKey.argumentList] != null &&
         map[AstNodeKey.argumentList][AstNodeKey.argumentList] != null) {
       argumentList = [];
@@ -107,7 +134,7 @@ class Expression extends BinaryExpression {
         }
         // is TypeArgument or Identifier
         else {
-          argumentList.add(TypeArgument.fromMap(temp));
+          argumentList.add(NamedExpression.fromMap(temp));
         }
       }
     }
@@ -140,18 +167,18 @@ class Expression extends BinaryExpression {
 }
 
 /// for argumentList value
-class TypeArgument extends AstNode {
+class NamedExpression extends AstNode {
   Identifier name;
   Expression expression;
 
   /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
   ///  {"body":{"type":"BlockStatement","statements":[{ "type":"ReturnStatement", "expression":{}}]}}
-  List<BlockStatement> body;
+  List<BlockStatement> statements;
 
   /// 当此argument为最后一层时，此时[value]将有具体的值，而[expression]则不会有值。
   dynamic value;
 
-  TypeArgument.fromMap(Map map) : super(map: map) {
+  NamedExpression.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.name = Identifier.fromMap(map[AstNodeKey.name]);
 
@@ -163,46 +190,18 @@ class TypeArgument extends AstNode {
 
     if (map[AstNodeKey.body] != null &&
         map[AstNodeKey.body][AstNodeKey.statements] != null) {
-      this.body = [];
+      this.statements = [];
       for (Map temp in map[AstNodeKey.body][AstNodeKey.statements]) {
-        this.body.add(BlockStatement.fromMap(temp));
+        this.statements.add(BlockStatement.fromMap(temp));
       }
     }
-  }
-}
-
-///
-class BinaryExpression extends AstNode {
-  String operator;
-  Identifier left;
-  Identifier right;
-
-  BinaryExpression({this.operator, this.right, this.left});
-
-  BinaryExpression.fromMap(Map map) : super(map: map) {
-    if (map == null) return;
-    this.operator = map[AstNodeKey.operator];
-    this.left = Identifier.fromMap(map[AstNodeKey.left]);
-    this.right = Identifier.fromMap(map[AstNodeKey.right]);
-  }
-}
-
-/// For variable declarator
-class Declaration extends AstNode {
-  Identifier name;
-  Identifier init;
-
-  Declaration.fromMap(Map map) : super(map: map) {
-    if (map == null) return;
-    this.name = Identifier.fromMap(map[AstNodeKey.name]);
-    this.init = Identifier.fromMap(map[AstNodeKey.init]);
   }
 }
 
 /// contains ExpressionStatement and ReturnStatement
 class BlockStatement extends AstNode {
   Expression expression;
-  String typeAnnotation;
+  Identifier typeAnnotation;
   List<Declaration> declarations;
 
   /// Identifier , BinaryExpression
@@ -214,15 +213,19 @@ class BlockStatement extends AstNode {
   /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
   List<BlockStatement> elseStatement;
 
-  // List<BlockStatement> labels;
-
   List<BlockStatement> members;
 
+  /// 此属性为了方便调用，对原ast node json进行了层级消减（消减一级）
+  List<BlockStatement> statements;
+
+  BinaryExpression updaters;
+
+  BlockStatement forLoopParts;
 
   BlockStatement.fromMap(Map map) : super(map: map) {
     if (map == null) return;
     this.expression = Expression.fromMap(map[AstNodeKey.expression]);
-    this.typeAnnotation = map[AstNodeKey.typeAnnotation];
+    this.typeAnnotation = Identifier.fromMap(map[AstNodeKey.typeAnnotation]);
 
     if (map[AstNodeKey.declarations] != null) {
       declarations = [];
@@ -264,7 +267,21 @@ class BlockStatement extends AstNode {
       }
     }
 
-  }// end fromMap
+    // for if statement
+    if (map[AstNodeKey.body] != null &&
+        map[AstNodeKey.body][AstNodeKey.statements] != null) {
+      this.statements = [];
+      for (Map temp in map[AstNodeKey.body][AstNodeKey.statements]) {
+        this.statements.add(BlockStatement.fromMap(temp));
+      }
+    }
+
+    // for foreach statement
+    this.updaters = BinaryExpression.fromMap(map[AstNodeKey.updaters]);
+
+    // for foreach statement
+    this.forLoopParts = BlockStatement.fromMap(map[AstNodeKey.forLoopParts]);
+  } // end fromMap
 }
 
 ///
@@ -362,7 +379,7 @@ class ClassDeclaration extends AstNode {
   }
 }
 
-///
+/// 依赖引入节点
 class ImportDirective extends AstNode {
   Identifier uri;
   String prefix;
@@ -372,12 +389,10 @@ class ImportDirective extends AstNode {
     if (map == null) return;
     this.uri = Identifier.fromMap(map[AstNodeKey.uri]);
     this.prefix = map[AstNodeKey.prefix];
-
-    // todo combinators
   }
 }
 
-///
+/// 最顶层节点
 class Program extends AstNode {
   List<ClassDeclaration> classBody;
   List<FunctionDeclaration> functionBody;

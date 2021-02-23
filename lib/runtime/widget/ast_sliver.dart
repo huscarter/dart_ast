@@ -24,7 +24,7 @@ class AstSliverGrid extends AstWidget {
     SliverGridDelegateWithMaxCrossAxisExtent gridDelegate;
     SliverChildBuilderDelegate delegate;
     // all is [NamedExpression]
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         // 使用字符串赋值
         case "gridDelegate":
@@ -60,7 +60,7 @@ class AstSliverGridDelegateWithMaxCrossAxisExtent extends AstWidget {
     double crossAxisSpacing;
     double childAspectRatio;
 
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "maxCrossAxisExtent":
           maxCrossAxisExtent = arg.expression.value;
@@ -218,7 +218,7 @@ class AstSliverChildBuilderDelegate extends AstWidget {
     if (node.argumentList == null) return null;
     int childCount;
     List<BlockStatement> astNodes;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.type) {
         case AstNodeType.NamedExpression:
           if (arg.name.value == "childCount") {
@@ -226,7 +226,7 @@ class AstSliverChildBuilderDelegate extends AstWidget {
           }
           break;
         case AstNodeType.FunctionExpression:
-          astNodes = arg.body;
+          astNodes = arg.statements;
           break;
         default:
           break;
@@ -265,7 +265,7 @@ class AstSliverFixedExtentList extends AstWidget {
     double itemExtent;
     SliverChildBuilderDelegate delegate;
     // all is [NamedExpression]
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
       // 使用字符串赋值
         case "itemExtent":

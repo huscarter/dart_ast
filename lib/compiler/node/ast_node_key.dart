@@ -4,18 +4,26 @@ class AstNodeKey {
 
   ///
   static const String type = "type";
+
+  ///
   static const String body = "body";
   static const String name = "name";
   static const String superClause = "superClause";
   static const String implementsClause = "implementsClause";
   static const String widthClause = "widthClause";
   static const String metadata = "metadata";
+  static const String fields = "fields";
+  static const String isStatic = "isStatic";
+
+  ///
   static const String parameters = "parameters";
   static const String parameterType = "parameterType";
   static const String parameterList = "parameterList";
   static const String typeParameters = "typeParameters";
   static const String isAsync = "isAsync";
   static const String returnType = "returnType";
+
+  ///
   static const String expression = "expression";
   static const String callee = "callee";
   static const String argumentList = "argumentList";
@@ -58,6 +66,7 @@ class AstNodeKey {
 
   ///
   static const String condition = "condition";
+  static const String updaters = "updaters";
   static const String thenElement = "thenElement";
   static const String elseElement = "elseElement";
   static const String thenStatement = "thenStatement";
@@ -68,9 +77,15 @@ class AstNodeKey {
   static const String members = "members";
   static const String label = "label";
 
+  ///
   static const String forLoopParts = "forLoopParts";
   static const String variables = "variables";
-  static const String initialization = "initialization";
+  // static const String initialization = "initialization"; // use init
+  // static const String initializer = "initializer"; // use init
+  static const String isConst = "isConst";
+  static const String isFinal = "isFinal";
+  static const String isLate = "isLate";
   static const String operand = "operand";
+  static const String loopVariable = "loopVariable";
 
 }

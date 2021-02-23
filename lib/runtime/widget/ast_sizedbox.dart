@@ -16,7 +16,7 @@ class AstSizedBox extends AstWidget {
     Widget child;
     double width;
     double height;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "child":
           child = RuntimeFactory.buildWidget(arg.expression);

@@ -17,7 +17,7 @@ class AstRow extends AstWidget {
   Widget build() {
     if (node.argumentList == null) return Row();
     List<Widget> children = [];
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "children":
           for(Expression childNode in arg.expression.value){

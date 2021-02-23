@@ -25,7 +25,7 @@ class AstTextSpan extends AstWidget {
     if (node.argumentList == null) return TextSpan();
     String text = "";
     TextStyle textStyle;
-    for (TypeArgument arg in node.argumentList) {
+    for (NamedExpression arg in node.argumentList) {
       switch (arg.name.value) {
         case "style":
           textStyle = ArgText.buildTextStyle(arg.expression);
